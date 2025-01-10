@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [
         {
             "id": 1,
@@ -31,4 +32,39 @@
             "id": 8,
             "name": "Jawa Tengah"
         }
+=======
+[
+        {
+            "id": 1,
+            "name": "Jakarta"
+        },
+        {
+            "id": 2,
+            "name": "KTI"
+        },
+        {
+            "id": 3,
+            "name": "Kalimantan"
+        },
+        {
+            "id": 4,
+            "name": "Jawa Barat"
+        },
+        {
+            "id": 5,
+            "name": "Sumatera"
+        },
+        {
+            "id": 6,
+            "name": "Jawa Timur Balinusra"
+        },
+        {
+            "id": 7,
+            "name": "HO"
+        },
+        {
+            "id": 8,
+            "name": "Jawa Tengah"
+        }
+>>>>>>> 6f6949f4938d86ba0e2c06119519abfba8adc3d1
     ]
