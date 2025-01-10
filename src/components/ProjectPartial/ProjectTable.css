@@ -1,0 +1,129 @@
+.ag-theme-alpine {
+  --ag-header-background-color: #fcfcfd;
+  --ag-header-foreground-color: #667085;
+  --ag-header-cell-hover-background-color: #fff;
+  --ag-row-hover-color: #fff;
+  --ag-row-border-color: #fff;
+  --ag-cell-horizontal-padding: 16px;
+  --ag-header-column-separator-display: block;
+  --ag-header-column-separator-color: #fff;
+  --ag-header-column-separator-height: 100%;
+  --ag-font-size: 1.8vh;
+  --ag-font-family: inherit;
+  font-family: 'Figtree';
+}
+
+.ag-theme-alpine .ag-header-cell {
+  font-weight: 600;
+  font-family: 'Figtree';
+}
+
+.ag-theme-alpine .ag-row {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+.ag-root-wrapper {
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  /* border: var(--ag-borders) var(--ag-border-color); */
+}
+
+.ag-floating-top {
+  border-bottom: none;
+}
+
+.ag-row-odd {
+  background-color: #fff;
+}
+
+.ag-pinned-left-header {
+  border-right: var(--ag-borders-critical) var(--ag-border-color);
+  border: none;
+}
+
+
+.custom-select .solid-select-list {
+  @apply bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg;
+}
+
+.custom-select .solid-select-option {
+  @apply px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer;
+}
+
+.custom-select .solid-select-option[data-focused="true"] {
+  @apply bg-gray-100 dark:bg-gray-600;
+}
+
+/* Add these styles to your existing .custom-select styles */
+.custom-select {
+  position: relative;
+}
+
+.select-with-icon {
+  position: relative;
+  width: 100%;
+}
+
+.select-with-icon .solid-select-control {
+  padding-left: 2.5rem !important;
+  padding-right: 2.5rem !important;
+}
+
+
+.select-with-icon-non-icon {
+  position: relative;
+  width: 100%;
+}
+
+.select-with-icon-non-icon .solid-select-control {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+}
+
+/* Left icon */
+.select-icon-left {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  color: #000000;
+  display: flex;
+  align-items: center;
+}
+
+/* Right icon */
+.select-icon-right {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.select-icon-left svg,
+.select-icon-right svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Add these new styles */
+.select-with-icon .select-icon-right svg {
+  transition: transform 0.2s ease;
+}
+
+.select-with-icon .solid-select-container[data-has-focus="true"] .select-icon-right svg {
+  transform: rotate(180deg);
+}
+
+/* If you want the rotation to also happen when the dropdown is open */
+.select-with-icon .solid-select-container[data-open="true"] .select-icon-right svg {
+  transform: rotate(180deg);
+}
