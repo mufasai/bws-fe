@@ -8,6 +8,7 @@ import RecentApp from "./RecentActivity";
 import QuickAction from "./QuickAction";
 import Application from "./Application";
 import Gateway from "./Gateway";
+import ProviderPrefixesTable from "./ProviderPrefix";
 
 const ParameterManagement = () => {
   interface TabContent {
@@ -30,92 +31,6 @@ const ParameterManagement = () => {
     icon: JSX.Element;
     active: boolean;
   }
-
-  {
-    /* provider prefixes */
-  }
-  // Add new interface for provider data
-  interface ProviderData {
-    prefix: string;
-    provider: string;
-    status: string;
-  }
-
-  // Grid column definitions
-  const columnDefs = [
-    {
-      field: "prefix",
-      headerName: "Prefix",
-      sortable: true,
-      filter: true,
-      width: 150,
-    },
-    {
-      field: "provider",
-      headerName: "Provider",
-      sortable: true,
-      filter: true,
-      width: 200,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      sortable: true,
-      filter: true,
-      width: 150,
-      cellRenderer: (params: any) => {
-        return `<div class="inline-block px-3 py-1 rounded-full ${
-          params.value === "Active"
-            ? "bg-green-100 text-green-800"
-            : "bg-red-100 text-red-800"
-        }">${params.value}</div>`;
-      },
-    },
-    {
-      headerName: "Actions",
-      width: 120,
-      cellRenderer: () => {
-        return `
-          <div class="flex gap-2">
-            <button class="text-blue-600 hover:text-blue-800">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20h9"></path>
-                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-              </svg>
-            </button>
-            <button class="text-red-600 hover:text-red-800">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 6h18"></path>
-                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-              </svg>
-            </button>
-          </div>
-        `;
-      },
-    },
-  ];
-
-  // Grid row data
-  const rowData = [
-    { prefix: "0811", provider: "Telkomsel", status: "Active" },
-    { prefix: "0812", provider: "Telkomsel", status: "Active" },
-    { prefix: "0813", provider: "Telkomsel", status: "Active" },
-    { prefix: "0814", provider: "Indosat", status: "Active" },
-    { prefix: "0815", provider: "Indosat", status: "Active" },
-    { prefix: "0816", provider: "Indosat", status: "Active" },
-    { prefix: "0855", provider: "Indosat", status: "Active" },
-    { prefix: "0856", provider: "Indosat", status: "Active" },
-    { prefix: "0857", provider: "Indosat", status: "Active" },
-    { prefix: "0858", provider: "Indosat", status: "Active" },
-  ];
-
-  // Grid default column definitions
-  const defaultColDef = {
-    resizable: true,
-  };
-
-  //sms cost
 
   const tabs: Tab[] = [
     {
@@ -251,27 +166,17 @@ const ParameterManagement = () => {
   const handleTabClick = (tabId: TabId) => {
     setActiveTab(tabId);
   };
-  //provider prefixes
-  const renderContentProvider = () => {
-    if (activeTab() === "provider") {
-      return (
-        <div style={{ height: "500px" }} class="ag-theme-alpine">
-          <AgGridSolid
-            columnDefs={columnDefs}
-            rowData={rowData}
-            defaultColDef={defaultColDef}
-            paginationPageSize={10}
-            domLayout="autoHeight"
-            class="rounded-lg border ag-theme-alpine dark:ag-theme-alpine-dark border-gray-200 "
-          />
-        </div>
-      );
-    }
-  };
+
   // Render content untuk "sms-template"
   const renderContentSmsTemplate = () => {
     if (activeTab() === "sms-template") {
       return <SmsTemplate apiUrl="http://localhost:8080/api/sms-template" />;
+    }
+  };
+  //provider prefix
+  const renderContentProviderPrefix = () => {
+    if (activeTab() === "provider") {
+      return <ProviderPrefixesTable />;
     }
   };
   //sms application
@@ -312,22 +217,11 @@ const ParameterManagement = () => {
           </div>
 
           {/* Dynamic Content */}
-          {renderContentProvider()}
+          {renderContentProviderPrefix()}
           {renderContentSmsTemplate()}
           {renderContentAppliacation()}
           {renderContentGateway()}
           {/* Templates */}
-
-          {/* Pagination */}
-          <div class="flex justify-between items-center mt-4 border-[#989898] border-[1px] rounded-lg">
-            <div class="my-4 mx-4 flex flex-row w-full justify-between">
-              <span class="text-gray-600 my-auto">Showing 1-8 of 32 items</span>
-              <div class="flex justify-end space-x-2">
-                <button class="px-4 py-2 border rounded-lg">Previous</button>
-                <button class="px-4 py-2 border rounded-lg">Next</button>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Right Section */}

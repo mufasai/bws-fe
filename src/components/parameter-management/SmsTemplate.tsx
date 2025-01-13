@@ -228,8 +228,11 @@ const SmsTemplate = (props: SmsTemplateProps) => {
       </div>
 
       <Show when={isPopupOpen()}>
-        <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center h-screen">
-          <div class="bg-white p-6 rounded-lg shadow-lg">
+        <div
+          class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+          style={{ height: "100vh" }}
+        >
+          <div class="bg-white p-6 rounded-lg shadow-lg w-[50%]">
             <h2 class="text-lg font-bold mb-4">Add New Sms Template</h2>
             <input
               type="text"
@@ -268,7 +271,7 @@ const SmsTemplate = (props: SmsTemplateProps) => {
               class="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
             />
             <textarea
-              placeholder="Failover"
+              placeholder="Created by"
               value={newSmsTemplate()?.created_by}
               onInput={(e) =>
                 setNewSmsTemplate({
@@ -392,6 +395,16 @@ const SmsTemplate = (props: SmsTemplateProps) => {
           </div>
         )}
       </For>
+      {/* Pagination */}
+      <div class="flex justify-between items-center mt-4 border-[#989898] border-[1px] rounded-lg">
+        <div class="my-4 mx-4 flex flex-row w-full justify-between">
+          <span class="text-gray-600 my-auto">Showing 1-8 of 32 items</span>
+          <div class="flex justify-end space-x-2">
+            <button class="px-4 py-2 border rounded-lg">Previous</button>
+            <button class="px-4 py-2 border rounded-lg">Next</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
