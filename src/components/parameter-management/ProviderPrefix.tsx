@@ -44,6 +44,7 @@ const ProviderPrefixesTable = () => {
 
   const createData = async () => {
     try {
+      console.log("add data");
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -77,6 +78,7 @@ const ProviderPrefixesTable = () => {
   };
 
   const updateDataProviderPrefixes = async () => {
+    console.log("update data");
     if (!form().id) return;
     try {
       const response = await fetch(`${API_URL}/${form()?.id?.id?.String}`, {
@@ -248,6 +250,7 @@ const ProviderPrefixesTable = () => {
               <h2 class="text-lg font-bold mb-4">
                 {form().id ? "Edit Prefix" : "Add New Prefix"}
               </h2>
+              {/* <form > */}
               <div class="flex flex-col gap-4">
                 <div>
                   <label>Prefix:</label>
@@ -293,12 +296,13 @@ const ProviderPrefixesTable = () => {
                   Cancel
                 </button>
                 <button
-                  onClick={form().id ? updateDataProviderPrefixes : createData}
+                  onClick={updateDataProviderPrefixes}
                   class="px-4 py-2 bg-[#0075FE] text-white rounded-lg"
                 >
                   Save
                 </button>
               </div>
+              {/* </form> */}
             </div>
           </div>
         )}
