@@ -23,6 +23,10 @@ export default function ProjectPage() {
     
     // const [name, setName] = createSignal("");
     // const [email, setEmail] = createSignal("");
+    const [name, setName] = createSignal('');
+    const [email, setEmail] = createSignal('');
+    const [password, setPassword] = createSignal('');
+    const [confirmPassword, setConfirmPassword] = createSignal('');
     
 
     const [refreshTrigger, setRefreshTrigger] = createSignal(0);
@@ -36,68 +40,106 @@ export default function ProjectPage() {
     //     setShowAddModal(true);
     // };
 
-    const handleAddUser = async (data: any) => {
-        console.log("Add user:", data);
-        setSelectedData(data);
+    // const handleAddUser = async (data: any) => {
+    //     console.log("Add user:", data);
+    //     setSelectedData(data);
     
-        // Menampilkan form input untuk memasukkan data pengguna baru
-        Swal.fire({
-            title: "Add New User",
-            html: `
-                <input type="text" id="newName" class="swal2-input" placeholder="Full Name" />
-                <input type="email" id="newEmail" class="swal2-input" placeholder="Email Address" />
-                <input type="password" id="newPassword" class="swal2-input" placeholder="New Password" />
-                <input type="password" id="confirmPassword" class="swal2-input" placeholder="Confirm Password" />
-            `,
-            icon: "question",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Add User",
-            preConfirm: () => {
-                const newName = (document.getElementById('newName') as HTMLInputElement).value;
-                const newEmail = (document.getElementById('newEmail') as HTMLInputElement).value;
-                const newPassword = (document.getElementById('newPassword') as HTMLInputElement).value;
-                const confirmPassword = (document.getElementById('confirmPassword') as HTMLInputElement).value;
+    //     // Menampilkan form input untuk memasukkan data pengguna baru
+    //     Swal.fire({
+    //         title: "Add New User",
+    //         html: `
+    //             <input type="text" id="newName" class="swal2-input" placeholder="Full Name" />
+    //             <input type="email" id="newEmail" class="swal2-input" placeholder="Email Address" />
+    //             <input type="password" id="newPassword" class="swal2-input" placeholder="New Password" />
+    //             <input type="password" id="confirmPassword" class="swal2-input" placeholder="Confirm Password" />
+    //         `,
+    //         icon: "question",
+    //         showCancelButton: true,
+    //         confirmButtonColor: "#3085d6",
+    //         cancelButtonColor: "#d33",
+    //         confirmButtonText: "Add User",
+    //         preConfirm: () => {
+    //             const newName = (document.getElementById('newName') as HTMLInputElement).value;
+    //             const newEmail = (document.getElementById('newEmail') as HTMLInputElement).value;
+    //             const newPassword = (document.getElementById('newPassword') as HTMLInputElement).value;
+    //             const confirmPassword = (document.getElementById('confirmPassword') as HTMLInputElement).value;
     
-                // Validasi input
-                if (!newName || !newEmail || !newPassword || !confirmPassword) {
-                    Swal.showValidationMessage("Please fill in all fields.");
-                    return false;
-                }
+    //             // Validasi input
+    //             if (!newName || !newEmail || !newPassword || !confirmPassword) {
+    //                 Swal.showValidationMessage("Please fill in all fields.");
+    //                 return false;
+    //             }
     
-                if (newPassword !== confirmPassword) {
-                    Swal.showValidationMessage("Passwords do not match.");
-                    return false;
-                }
+    //             if (newPassword !== confirmPassword) {
+    //                 Swal.showValidationMessage("Passwords do not match.");
+    //                 return false;
+    //             }
     
-                return { newName, newEmail, newPassword };
-            }
-        }).then(async (result) => {
-            // if (result.isConfirmed) {
-            //     const { newName, newEmail, newPassword } = result.value;
+    //             return { newName, newEmail, newPassword };
+    //         }
+    //     }).then(async (result) => {
+    //         // if (result.isConfirmed) {
+    //         //     const { newName, newEmail, newPassword } = result.value;
     
-            //     // Logika untuk menambahkan user baru
-            //     try {
-            //         // Panggil API atau fungsi untuk menambahkan pengguna baru
-            //         await addUserAPI(newName, newEmail, newPassword); // Contoh API
-            //         Swal.fire({
-            //             title: "Success!",
-            //             text: "New user has been added.",
-            //             icon: "success"
-            //         });
-            //         // Refresh data atau trigger pembaruan tampilan setelah penambahan user
-            //         setRefreshTrigger(prev => prev + 1);
-            //     } catch (error) {
-            //         console.error('Error adding user:', error);
-            //         Swal.fire({
-            //             title: "Error!",
-            //             text: "Failed to add user.",
-            //             icon: "error"
-            //         });
-            //     }
-            // }
-        });
+    //         //     // Logika untuk menambahkan user baru
+    //         //     try {
+    //         //         // Panggil API atau fungsi untuk menambahkan pengguna baru
+    //         //         await addUserAPI(newName, newEmail, newPassword); // Contoh API
+    //         //         Swal.fire({
+    //         //             title: "Success!",
+    //         //             text: "New user has been added.",
+    //         //             icon: "success"
+    //         //         });
+    //         //         // Refresh data atau trigger pembaruan tampilan setelah penambahan user
+    //         //         setRefreshTrigger(prev => prev + 1);
+    //         //     } catch (error) {
+    //         //         console.error('Error adding user:', error);
+    //         //         Swal.fire({
+    //         //             title: "Error!",
+    //         //             text: "Failed to add user.",
+    //         //             icon: "error"
+    //         //         });
+    //         //     }
+    //         // }
+    //     });
+    // };
+
+    const handleAddUser = async () => {
+        console.log("Add new user modal opened.");
+        setShowAddModal(true);
+    };
+    
+
+    const handleSubmit = () => {
+        // Ambil data dari form input
+        const newName = name();
+        const newEmail = email();
+        const newPassword = password();
+        // const confirmPassword = confirmPassword();
+    
+        // Validasi input
+        // if (!newName || !newEmail || !newPassword || !confirmPassword) {
+        //     alert("Please fill in all fields.");
+        //     return;
+        // }
+    
+        // if (newPassword !== confirmPassword) {
+        //     alert("Passwords do not match.");
+        //     return;
+        // }
+    
+        // Jika validasi berhasil, kirim data untuk penambahan user
+        // try {
+        //     // Panggil API atau logika untuk menambahkan pengguna baru
+        //     await addUserAPI(newName, newEmail, newPassword);
+        //     alert("New user has been added successfully.");
+        //     // Trigger pembaruan tampilan
+        //     setRefreshTrigger(prev => prev + 1);
+        //     setShowAddModal(false);
+        // } catch (error) {
+        //     console.error('Error adding user:', error);
+        //     alert("Failed to add user.");
+        // }
     };
     
 
@@ -395,7 +437,7 @@ export default function ProjectPage() {
                                 </button>
 
                                 <button
-                                    onClick={handleAddUser}
+                                    onClick={() => handleAddUser()}
                                     class='inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700'
                                 >
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -403,46 +445,64 @@ export default function ProjectPage() {
                                     </svg>
                                     Add New 
                                 </button>
-                                {/* Modal
+                                {/* Modal */}
                                 {showAddModal() && (
                                     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                                    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-                                        <h2 class="text-lg font-medium text-gray-800">Add New User</h2>
-                                        <div class="mt-4">
-                                        <label class="block text-sm font-medium text-gray-700">Name</label>
-                                        <input
-                                            type="text"
-                                            class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
-                                            value={name()}
-                                            onInput={(e) => setName(e.target.value)}
-                                        />
-                                        </div>
-                                        <div class="mt-4">
-                                        <label class="block text-sm font-medium text-gray-700">Email</label>
-                                        <input
-                                            type="email"
-                                            class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
-                                            value={email()}
-                                            onInput={(e) => setEmail(e.target.value)}
-                                        />
-                                        </div>
-                                        <div class="mt-6 flex justify-end">
-                                        <button
-                                            onClick={() => setShowAddModal(false)}
-                                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 mr-2"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            onClick={handleSubmit}
-                                            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
-                                        >
-                                            Save
-                                        </button>
+                                        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                                            <h2 class="text-lg font-medium text-gray-800">Add New User</h2>
+                                            <div class="mt-4">
+                                                <label class="block text-sm font-medium text-gray-700">Name</label>
+                                                <input
+                                                    type="text"
+                                                    class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+                                                    value={name()}
+                                                    onInput={(e) => setName(e.target.value)}
+                                                />
+                                            </div>
+                                            <div class="mt-4">
+                                                <label class="block text-sm font-medium text-gray-700">Email</label>
+                                                <input
+                                                    type="email"
+                                                    class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+                                                    value={email()}
+                                                    onInput={(e) => setEmail(e.target.value)}
+                                                />
+                                            </div>
+                                            <div class="mt-4">
+                                                <label class="block text-sm font-medium text-gray-700">Password</label>
+                                                <input
+                                                    type="password"
+                                                    class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+                                                    value={password()}
+                                                    onInput={(e) => setPassword(e.target.value)}
+                                                />
+                                            </div>
+                                            <div class="mt-4">
+                                                <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                                                <input
+                                                    type="password"
+                                                    class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+                                                    value={confirmPassword()}
+                                                    onInput={(e) => setConfirmPassword(e.target.value)}
+                                                />
+                                            </div>
+                                            <div class="mt-6 flex justify-end">
+                                                <button
+                                                    onClick={() => setShowAddModal(false)}
+                                                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 mr-2"
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    onClick={handleSubmit}
+                                                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                                                >
+                                                    Save
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                    </div>
-                                )} */}
+                                )}
                             </div>
                         </div>
 
