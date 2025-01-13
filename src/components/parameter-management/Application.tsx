@@ -42,7 +42,7 @@ const Application = (props: ApplicationProps) => {
       }
       const result = await response.json();
       const data = result.data.map((item: any) => ({
-        id: item.id, // Nested id structure
+        id: { id: { String: item.id.id.String } }, // Nested id structure
         title: item.app_name,
         tag: item.status,
         content: item.api_key,
@@ -59,7 +59,7 @@ const Application = (props: ApplicationProps) => {
   // Panggil fetch API saat komponen di-mount
   createEffect(() => {
     fetchApplication();
-  });
+  }, []);
 
   // Filter templates berdasarkan searchQuery
   createEffect(() => {
@@ -101,21 +101,38 @@ const Application = (props: ApplicationProps) => {
       }
 
       const result = await response.json();
-      setTemplates([
-        ...templates(),
-        { id: { id: { String: result.id } }, ...newApplication() },
+      console.log(result, "result");
+
+      // Periksa struktur hasil respons API
+      const newId = result.data.id?.id?.String || "unknown-id"; // Menangani nested ID
+      setTemplates((prev) => [
+        ...prev,
+        {
+          id: { id: { String: newId } },
+          title: newApplication().title,
+          tag: newApplication().tag,
+          content: newApplication().content,
+        },
       ]);
+      setFilteredTemplates((prev) => [
+        ...prev,
+        {
+          id: { id: { String: newId } },
+          title: newApplication().title,
+          tag: newApplication().tag,
+          content: newApplication().content,
+        },
+      ]);
+      setNewApplication({ title: "", tag: "", content: "" });
       closePopup();
+      await fetchApplication();
     } catch (err: any) {
       console.error(err.message);
     }
   };
 
   // Fungsi untuk menyimpan perubahan saat edit
-  const saveEdit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-
-    // Ambil data yang sedang diedit
+  const saveEdit = async () => {
     const updatedTemplate = editingTemplate();
 
     let dataResult = {
@@ -145,21 +162,7 @@ const Application = (props: ApplicationProps) => {
       const responseData = await response.json();
 
       // Perbarui state setelah berhasil
-      setTemplates(
-        templates().map((template) =>
-          template.id.id.String === updatedTemplate.id.id.String
-            ? { ...template, ...updatedTemplate }
-            : template
-        )
-      );
-      setFilteredTemplates(
-        filteredTemplates().map((template) =>
-          template.id.id.String === updatedTemplate.id.id.String
-            ? { ...template, ...updatedTemplate }
-            : template
-        )
-      );
-
+      await fetchApplication();
       setEditingTemplate(null);
     } catch (err: any) {
       console.error("Update error:", err.message);

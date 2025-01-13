@@ -53,14 +53,14 @@ const Gateway = (props: GatewayProps) => {
       }
       const result = await response.json();
       const data = result.data.map((item: any) => ({
-        id: item.id, // Pastikan API memiliki ID unik
+        id: { id: { String: item.id.id.String } }, // Sesuaikan dengan struktur yang benar
         title: item.app_name,
         status: item.status,
         tagpriority: item.priority,
         content: item.failover,
       }));
       setTemplates(data);
-      setFilteredTemplates(data); // Set data awal untuk ditampilkan
+      setFilteredTemplates(data);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -71,7 +71,7 @@ const Gateway = (props: GatewayProps) => {
   // Panggil fetch API saat komponen di-mount
   createEffect(() => {
     fetchGateway();
-  });
+  }, []);
 
   // Filter templates berdasarkan searchQuery
   createEffect(() => {
@@ -96,23 +96,54 @@ const Gateway = (props: GatewayProps) => {
         body: JSON.stringify({
           app_name: newGateway().title,
           status: newGateway().status,
-          tagpriority: newGateway().tagpriority,
+          priority: newGateway().tagpriority,
           failover: newGateway().content,
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add application");
+        throw new Error("Failed to add gateway");
       }
 
       const result = await response.json();
-      setTemplates([
-        ...templates(),
-        { id: { id: { String: result.id } }, ...newGateway() },
+      console.log(result, "result");
+
+      // Periksa struktur hasil respons API
+      const newId = result.data.id?.id?.String || "unknown-id"; // Menangani nested ID
+
+      // Update templates dengan data baru
+      setTemplates((prev) => [
+        ...prev,
+        {
+          id: { id: { String: newId } }, // Sesuaikan dengan struktur yang benar
+          title: newGateway().title,
+          status: newGateway().status,
+          tagpriority: newGateway().tagpriority,
+          content: newGateway().content,
+        },
       ]);
+
+      // Update filteredTemplates juga
+      setFilteredTemplates((prev) => [
+        ...prev,
+        {
+          id: { id: { String: newId } },
+          title: newGateway().title,
+          status: newGateway().status,
+          tagpriority: newGateway().tagpriority,
+          content: newGateway().content,
+        },
+      ]);
+
+      // Reset form dan tutup popup
+      setNewGateway({ title: "", status: "", tagpriority: "", content: "" });
       closePopup();
+
+      // Opsional: Refresh data dari server untuk memastikan sinkronisasi
+      await fetchGateway();
     } catch (err: any) {
       console.error(err.message);
+      setError(err.message);
     }
   };
 
@@ -146,13 +177,12 @@ const Gateway = (props: GatewayProps) => {
 
     let dataResult = {
       app_name: updatedGateway.title,
-      status: updatedGateway.tag,
-      tagpriority: updatedGateway.tagPriority,
+      status: updatedGateway.status,
+      priority: updatedGateway.tagpriority,
       failover: updatedGateway.content,
     };
 
     try {
-      console.log(dataResult, "data");
       const response = await fetch(
         `${props.apiUrl}/${updatedGateway.id.id.String}`,
         {
@@ -169,24 +199,8 @@ const Gateway = (props: GatewayProps) => {
         throw new Error(errorData.message || "Failed to update gateway");
       }
 
-      const responseData = await response.json();
-
-      // Perbarui state setelah berhasil
-      setTemplates(
-        templates().map((template) =>
-          template.id.id.String === updatedGateway.id.id.String
-            ? { ...template, ...updatedGateway }
-            : template
-        )
-      );
-      setFilteredTemplates(
-        filteredTemplates().map((template) =>
-          template.id.id.String === updatedGateway.id.id.String
-            ? { ...template, ...updatedGateway }
-            : template
-        )
-      );
-
+      // Refresh data dari server untuk memastikan data terbaru
+      await fetchGateway();
       setEditingTemplate(null);
     } catch (err: any) {
       console.error("Update error:", err.message);
@@ -224,7 +238,7 @@ const Gateway = (props: GatewayProps) => {
             <input
               type="text"
               placeholder="Name App"
-              value={newGateway().title}
+              value={newGateway()?.title}
               onInput={(e) =>
                 setNewGateway({
                   ...newGateway(),
@@ -236,7 +250,7 @@ const Gateway = (props: GatewayProps) => {
             <input
               type="text"
               placeholder="Status"
-              value={newGateway().status}
+              value={newGateway()?.status}
               onInput={(e) =>
                 setNewGateway({ ...newGateway(), status: e.target.value })
               }
@@ -245,7 +259,7 @@ const Gateway = (props: GatewayProps) => {
             <input
               type="text"
               placeholder="Priority"
-              value={newGateway().tagpriority}
+              value={newGateway()?.tagpriority}
               onInput={(e) =>
                 setNewGateway({
                   ...newGateway(),
@@ -256,7 +270,7 @@ const Gateway = (props: GatewayProps) => {
             />
             <textarea
               placeholder="Failover"
-              value={newGateway().content}
+              value={newGateway()?.content}
               onInput={(e) =>
                 setNewGateway({
                   ...newGateway(),

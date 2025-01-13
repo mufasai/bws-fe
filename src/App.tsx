@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Component } from "solid-js";
 import { Router, Route, Navigate } from "@solidjs/router";
 import { useAuth } from "./store/auth.store";
@@ -59,56 +58,3 @@ const App: Component = () => {
 };
 
 export default App;
-=======
-import { Component } from "solid-js";
-import { Router, Route, Navigate } from "@solidjs/router";
-import { useAuth } from "./store/auth.store"; 
-import Dashboard from "./pages/Dashboard"; 
-import Layout from "./components/layout/Layout"; 
-import "@thisbeyond/solid-select/style.css"; 
-import Login from "./pages/auth-page/Login";
-import Register from "./pages/auth-page/Register"; 
-import ProjectPage from "./pages/ProjectPage";
-
-const ProtectedRoute: Component<{ children: any }> = (props) => {
-  const { authState } = useAuth();
-  
-  if (!authState.isAuthenticated) {
-    return <Navigate href="/login" />;
-  }
-  
-  return <Layout>{props.children}</Layout>;
-};
-
-const App: Component = () => {
-  return (
-    <div class="min-h-screen">
-      <Router>
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        <Route
-          path="/dashboard"
-          component={() => (
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          )}
-        />
-       
-          <Route
-          path="/project"
-          component={() => (
-            <ProtectedRoute>
-              <ProjectPage />
-            </ProtectedRoute>
-          )}
-        />
-       
-        <Route path="*" component={() => <Navigate href="/dashboard" />} />
-      </Router>
-    </div>
-  );
-};
-
-export default App; 
->>>>>>> 6f6949f4938d86ba0e2c06119519abfba8adc3d1

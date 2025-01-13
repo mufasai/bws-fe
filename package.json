@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {
   "name": "bws-fe",
   "private": true,
@@ -40,46 +39,3 @@
     "node": ">=14.0.0"
   }
 }
-=======
-{
-  "name": "bws-fe",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "start": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "sebar" :"vite --host 0.0.0.0"
-  },
-  "dependencies": {
-    "@amcharts/amcharts5": "^5.10.8",
-    "@motionone/solid": "^10.16.4",
-    "@solid-primitives/storage": "^4.2.1",
-    "@solidjs/router": "^0.15.1",
-    "@thisbeyond/solid-select": "^0.15.0",
-    "ag-grid-community": "^30.0.3",
-    "ag-grid-enterprise": "^30.0.3",
-    "ag-grid-solid": "^30.0.3",
-    "flowbite": "^2.5.2",
-    "maplibre-gl": "^4.7.1",
-    "solid-icons": "^1.1.0",
-    "solid-js": "^1.9.3",
-    "solid-js-form": "^0.1.8",
-    "sweetalert2": "^11.14.5"
-  },
-  "devDependencies": {
-    "@types/node": "^22.10.1",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.16",
-    "typescript": "~5.6.2",
-    "vite": "^6.0.1",
-    "vite-plugin-solid": "^2.11.0"
-  },
-  "engines": {
-    "node": ">=14.0.0"
-  }
-}
->>>>>>> 6f6949f4938d86ba0e2c06119519abfba8adc3d1
