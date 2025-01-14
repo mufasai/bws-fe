@@ -32,6 +32,9 @@ const Application = (props: ApplicationProps) => {
     tag: "",
     content: "",
   });
+  const [currentPage, setCurrentPage] = createSignal(1);
+  const [pageSize] = createSignal(3); // Change from 8 to 3 items per page
+  const [totalItems, setTotalItems] = createSignal(0);
 
   // Fetch data dari API
   const fetchApplication = async () => {
@@ -194,6 +197,41 @@ const Application = (props: ApplicationProps) => {
     }
   };
 
+  // Calculate total pages
+  const totalPages = () => Math.ceil(filteredTemplates().length / pageSize());
+
+  // Get current page items
+  const currentItems = () => {
+    const start = (currentPage() - 1) * pageSize();
+    const end = start + pageSize();
+    return filteredTemplates().slice(start, end);
+  };
+
+  // Update total items when filtered templates change
+  createEffect(() => {
+    setTotalItems(filteredTemplates().length);
+  });
+
+  // Navigation functions
+  const nextPage = () => {
+    if (currentPage() < totalPages()) {
+      setCurrentPage(currentPage() + 1);
+    }
+  };
+
+  const previousPage = () => {
+    if (currentPage() > 1) {
+      setCurrentPage(currentPage() - 1);
+    }
+  };
+
+  // Calculate showing range
+  const showingRange = () => {
+    const start = (currentPage() - 1) * 3 + 1;
+    const end = Math.min(start + 2, totalItems());
+    return `${start}-${end} of ${totalItems()}`;
+  };
+
   return (
     <div class="space-y-4">
       {/* Search and Add New */}
@@ -275,7 +313,7 @@ const Application = (props: ApplicationProps) => {
       {isLoading() && <div>Loading...</div>}
       {error() && <div class="text-red-500">{error()}</div>}
 
-      <For each={filteredTemplates()}>
+      <For each={currentItems()}>
         {(item) => (
           <div class="bg-white p-4 rounded-lg border-[#989898] border-[1px]">
             <Show
@@ -356,6 +394,39 @@ const Application = (props: ApplicationProps) => {
           </div>
         )}
       </For>
+      {/* Pagination */}
+      <div class="flex justify-between items-center mt-4 border-[#989898] border-[1px] rounded-lg">
+        <div class="my-4 mx-4 flex flex-row w-full justify-between">
+          <span class="text-gray-600 my-auto">
+            Showing {showingRange()} items
+          </span>
+          <div class="flex justify-end space-x-2">
+            <button
+              class="px-4 py-2 border rounded-lg"
+              onClick={previousPage}
+              disabled={currentPage() === 1}
+              style={{
+                opacity: currentPage() === 1 ? "0.5" : "1",
+                cursor: currentPage() === 1 ? "not-allowed" : "pointer",
+              }}
+            >
+              Previous
+            </button>
+            <button
+              class="px-4 py-2 border rounded-lg"
+              onClick={nextPage}
+              disabled={currentPage() === totalPages()}
+              style={{
+                opacity: currentPage() === totalPages() ? "0.5" : "1",
+                cursor:
+                  currentPage() === totalPages() ? "not-allowed" : "pointer",
+              }}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

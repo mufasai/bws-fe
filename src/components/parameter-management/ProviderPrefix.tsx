@@ -215,6 +215,16 @@ const ProviderPrefixesTable = () => {
     },
   ];
 
+  const handleSave = async () => {
+    if (form().id) {
+      // If form has an ID, it's an update operation
+      await updateDataProviderPrefixes();
+    } else {
+      // If form has no ID, it's a create operation
+      await createData();
+    }
+  };
+
   return (
     <>
       <div class="space-y-4">
@@ -296,7 +306,7 @@ const ProviderPrefixesTable = () => {
                   Cancel
                 </button>
                 <button
-                  onClick={updateDataProviderPrefixes}
+                  onClick={handleSave}
                   class="px-4 py-2 bg-[#0075FE] text-white rounded-lg"
                 >
                   Save
