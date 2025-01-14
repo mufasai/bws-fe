@@ -256,7 +256,10 @@ const Application = (props: ApplicationProps) => {
 
       {/* Popup Form */}
       <Show when={isPopupOpen()}>
-        <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center h-screen">
+        <div
+          class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+          style={{ height: "100vh" }}
+        >
           <div class="bg-white p-6 rounded-lg shadow-lg">
             <h2 class="text-lg font-bold mb-4">Add New Application</h2>
             <input

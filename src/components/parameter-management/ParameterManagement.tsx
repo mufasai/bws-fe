@@ -9,6 +9,8 @@ import QuickAction from "./QuickAction";
 import Application from "./Application";
 import Gateway from "./Gateway";
 import ProviderPrefixesTable from "./ProviderPrefix";
+import SmsCostTable from "./SmsCost";
+import CountryCodes from "./CountryCodes";
 
 const ParameterManagement = () => {
   interface TabContent {
@@ -179,6 +181,18 @@ const ParameterManagement = () => {
       return <ProviderPrefixesTable />;
     }
   };
+  //sms cost
+  const renderContentSmsCost = () => {
+    if (activeTab() === "costs") {
+      return <SmsCostTable />;
+    }
+  };
+  //sms cost
+  const renderCountryCodes = () => {
+    if (activeTab() === "country") {
+      return <CountryCodes apiUrl="http://localhost:8080/api/country-codes" />;
+    }
+  };
   //sms application
   const renderContentAppliacation = () => {
     if (activeTab() === "application") {
@@ -219,6 +233,8 @@ const ParameterManagement = () => {
           {/* Dynamic Content */}
           {renderContentProviderPrefix()}
           {renderContentSmsTemplate()}
+          {renderContentSmsCost()}
+          {renderCountryCodes()}
           {renderContentAppliacation()}
           {renderContentGateway()}
           {/* Templates */}
