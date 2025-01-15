@@ -1,66 +1,54 @@
 import { createSignal, createEffect, For, Show } from "solid-js";
+import { useNavigate } from "@solidjs/router";
 
-interface GatewayProps {
+interface CountryProps {
   apiUrl: string; // URL untuk API
 }
 
-const Gateway = (props: GatewayProps) => {
+const CountryCodes = (props: CountryProps) => {
   const [templates, setTemplates] = createSignal<
     {
       id: { id: { String: string } };
-      title: string;
+      code_number: string;
+      country: string;
       status: string;
-      tagpriority: string;
-      content: string;
     }[]
   >([]);
   const [filteredTemplates, setFilteredTemplates] = createSignal<
     {
       id: { id: { String: string } };
-      title: string;
+      code_number: string;
+      country: string;
       status: string;
-      tagpriority: string;
-      content: string;
     }[]
   >([]);
   const [isLoading, setIsLoading] = createSignal(true);
   const [error, setError] = createSignal("");
   const [editingTemplate, setEditingTemplate] = createSignal<any>(null);
-  const [isPopupOpen, setIsPopupOpen] = createSignal(false);
-  const [newGateway, setNewGateway] = createSignal({
-    title: "",
-    status: "",
-    tagpriority: "",
-    content: "",
-  });
   const [searchQuery, setSearchQuery] = createSignal("");
+  const [isPopupOpen, setIsPopupOpen] = createSignal(false);
+  const [newApplication, setNewApplication] = createSignal({
+    code_number: "+62",
+    country: "",
+    status: "",
+  });
   const [currentPage, setCurrentPage] = createSignal(1);
   const [pageSize] = createSignal(3); // Change from 8 to 3 items per page
   const [totalItems, setTotalItems] = createSignal(0);
 
-  // Fungsi untuk membuka popup
-  const openPopup = () => {
-    setNewGateway({ title: "", status: "", tagpriority: "", content: "" });
-    setIsPopupOpen(true);
-  };
-
-  // Fungsi untuk menutup popup
-  const closePopup = () => setIsPopupOpen(false);
-
   // Fetch data dari API
-  const fetchGateway = async () => {
+  const fetchCountryCodes = async () => {
     try {
       const response = await fetch(props.apiUrl);
       if (!response.ok) {
-        throw new Error("Failed to fetch templates");
+        throw new Error("Failed to fetch applications");
       }
       const result = await response.json();
       const data = result.data.map((item: any) => ({
-        id: { id: { String: item.id.id.String } }, // Sesuaikan dengan struktur yang benar
-        title: item.app_name,
+        id: { id: { String: item.id.id.String } }, // Nested id structure
+        code_number: item.code_number,
+        country: item.country,
         status: item.status,
-        tagpriority: item.priority,
-        content: item.failover,
       }));
       setTemplates(data);
       setFilteredTemplates(data);
@@ -73,7 +61,7 @@ const Gateway = (props: GatewayProps) => {
 
   // Panggil fetch API saat komponen di-mount
   createEffect(() => {
-    fetchGateway();
+    fetchCountryCodes();
   }, []);
 
   // Filter templates berdasarkan searchQuery
@@ -82,30 +70,37 @@ const Gateway = (props: GatewayProps) => {
     setFilteredTemplates(
       templates().filter(
         (template) =>
-          template.title.toLowerCase().includes(query) ||
-          template.status.toLowerCase().includes(query) ||
-          template.tagpriority.toLowerCase().includes(query) ||
-          template.content.toLowerCase().includes(query)
+          template.code_number.toLowerCase().includes(query) ||
+          template.country.toLowerCase().includes(query) ||
+          template.status.toLowerCase().includes(query)
       )
     );
   });
 
-  // Fungsi untuk menambahkan template baru
-  const addGateway = async () => {
+  // Fungsi untuk membuka popup
+  const openPopup = () => {
+    setNewApplication({ code_number: "", country: "", status: "" });
+    setIsPopupOpen(true);
+  };
+
+  // Fungsi untuk menutup popup
+  const closePopup = () => setIsPopupOpen(false);
+
+  // Fungsi untuk menambahkan aplikasi baru
+  const addApplication = async () => {
     try {
       const response = await fetch(props.apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          app_name: newGateway().title,
-          status: newGateway().status,
-          priority: newGateway().tagpriority,
-          failover: newGateway().content,
+          code_number: newApplication().code_number,
+          country: newApplication().country,
+          status: newApplication().status,
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add gateway");
+        throw new Error("Failed to add application");
       }
 
       const result = await response.json();
@@ -113,45 +108,73 @@ const Gateway = (props: GatewayProps) => {
 
       // Periksa struktur hasil respons API
       const newId = result.data.id?.id?.String || "unknown-id"; // Menangani nested ID
-
-      // Update templates dengan data baru
       setTemplates((prev) => [
         ...prev,
         {
-          id: { id: { String: newId } }, // Sesuaikan dengan struktur yang benar
-          title: newGateway().title,
-          status: newGateway().status,
-          tagpriority: newGateway().tagpriority,
-          content: newGateway().content,
+          id: { id: { String: newId } },
+          code_number: newApplication().code_number,
+          country: newApplication().country,
+          status: newApplication().status,
         },
       ]);
-
-      // Update filteredTemplates juga
       setFilteredTemplates((prev) => [
         ...prev,
         {
           id: { id: { String: newId } },
-          title: newGateway().title,
-          status: newGateway().status,
-          tagpriority: newGateway().tagpriority,
-          content: newGateway().content,
+          code_number: newApplication().code_number,
+          country: newApplication().country,
+          status: newApplication().status,
         },
       ]);
-
-      // Reset form dan tutup popup
-      setNewGateway({ title: "", status: "", tagpriority: "", content: "" });
+      setNewApplication({ code_number: "", country: "", status: "" });
       closePopup();
-
-      // Opsional: Refresh data dari server untuk memastikan sinkronisasi
-      await fetchGateway();
+      await fetchCountryCodes();
     } catch (err: any) {
       console.error(err.message);
+    }
+  };
+
+  // Fungsi untuk menyimpan perubahan saat edit
+  const saveEdit = async () => {
+    const updatedTemplate = editingTemplate();
+
+    let dataResult = {
+      code_number: updatedTemplate.code_number,
+      country: updatedTemplate.country,
+      status: updatedTemplate.status,
+    };
+
+    try {
+      console.log(dataResult, "data");
+      const response = await fetch(
+        `${props.apiUrl}/${updatedTemplate.id.id.String}`, // Nested id
+        {
+          method: "PUT",
+          body: JSON.stringify(dataResult),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update application");
+      }
+
+      const responseData = await response.json();
+
+      // Perbarui state setelah berhasil
+      await fetchCountryCodes();
+      setEditingTemplate(null);
+    } catch (err: any) {
+      console.error("Update error:", err.message);
       setError(err.message);
     }
   };
 
-  // Fungsi untuk menghapus data
-  const deleteGateway = async (id: { id: { String: string } }) => {
+  // Fungsi untuk menghapus data dari backend dan state
+  const deleteTemplate = async (id: { id: { String: string } }) => {
     try {
       const response = await fetch(`${props.apiUrl}/${id.id.String}`, {
         method: "DELETE",
@@ -174,42 +197,6 @@ const Gateway = (props: GatewayProps) => {
     }
   };
 
-  // Fungsi untuk menyimpan perubahan saat edit
-  const saveEdit = async () => {
-    const updatedGateway = editingTemplate();
-
-    let dataResult = {
-      app_name: updatedGateway.title,
-      status: updatedGateway.status,
-      priority: updatedGateway.tagpriority,
-      failover: updatedGateway.content,
-    };
-
-    try {
-      const response = await fetch(
-        `${props.apiUrl}/${updatedGateway.id.id.String}`,
-        {
-          method: "PUT",
-          body: JSON.stringify(dataResult),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to update gateway");
-      }
-
-      // Refresh data dari server untuk memastikan data terbaru
-      await fetchGateway();
-      setEditingTemplate(null);
-    } catch (err: any) {
-      console.error("Update error:", err.message);
-      setError(err.message);
-    }
-  };
   // Calculate total pages
   const totalPages = () => Math.ceil(filteredTemplates().length / pageSize());
 
@@ -252,7 +239,7 @@ const Gateway = (props: GatewayProps) => {
         <div class="flex-1 relative">
           <input
             type="text"
-            placeholder="Search anything"
+            placeholder="Search applications"
             value={searchQuery()}
             onInput={(e) => setSearchQuery(e.target.value)}
             class="w-full px-4 py-2 border-[#989898] border-[1px] rounded-lg"
@@ -274,15 +261,34 @@ const Gateway = (props: GatewayProps) => {
           style={{ height: "100vh" }}
         >
           <div class="bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-lg font-bold mb-4">Add New Template</h2>
+            <h2 class="text-lg font-bold mb-4">Add New Country Code</h2>
+            <select
+              value={newApplication().code_number}
+              onInput={(e) =>
+                setNewApplication({
+                  ...newApplication(),
+                  code_number: e.target.value,
+                })
+              }
+              class="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
+            >
+              <option value="" disabled selected>
+                select code number
+              </option>
+              <option value="+62">+62</option>
+              <option value="+65">+65</option>
+              <option value="+91">+91</option>
+              <option value="+1">+1</option>
+              <option value="+60">+60</option>
+            </select>
             <input
               type="text"
-              placeholder="Name App"
-              value={newGateway()?.title}
+              placeholder="Country"
+              value={newApplication().country}
               onInput={(e) =>
-                setNewGateway({
-                  ...newGateway(),
-                  title: e.target.value,
+                setNewApplication({
+                  ...newApplication(),
+                  country: e.target.value,
                 })
               }
               class="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
@@ -290,44 +296,24 @@ const Gateway = (props: GatewayProps) => {
             <input
               type="text"
               placeholder="Status"
-              value={newGateway()?.status}
+              value={newApplication().status}
               onInput={(e) =>
-                setNewGateway({ ...newGateway(), status: e.target.value })
-              }
-              class="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
-            />
-            <input
-              type="text"
-              placeholder="Priority"
-              value={newGateway()?.tagpriority}
-              onInput={(e) =>
-                setNewGateway({
-                  ...newGateway(),
-                  tagpriority: e.target.value,
+                setNewApplication({
+                  ...newApplication(),
+                  status: e.target.value,
                 })
               }
-              class="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
-            />
-            <textarea
-              placeholder="Failover"
-              value={newGateway()?.content}
-              onInput={(e) =>
-                setNewGateway({
-                  ...newGateway(),
-                  content: e.target.value,
-                })
-              }
-              class="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
+              class="w-full px-3 py-2 mb-4 border border-gray-300 rounded"
             />
             <div class="flex justify-end space-x-2">
               <button
-                onClick={() => setIsPopupOpen(false)}
+                onClick={closePopup}
                 class="px-4 py-2 bg-gray-400 text-white rounded-lg"
               >
                 Cancel
               </button>
               <button
-                onClick={addGateway}
+                onClick={addApplication}
                 class="px-4 py-2 bg-[#0075FE] text-white rounded-lg"
               >
                 Save
@@ -344,46 +330,68 @@ const Gateway = (props: GatewayProps) => {
         {(item) => (
           <div class="bg-white p-4 rounded-lg border-[#989898] border-[1px]">
             <Show
-              when={editingTemplate()?.id?.id?.String === item.id.id.String}
+              when={editingTemplate()?.id?.id?.String === item.id.id.String} // Periksa apakah ID cocok
               fallback={
                 <>
                   <div class="flex justify-between items-center mb-3">
-                    <h3 class="font-semibold">{item.title}</h3>
-                    <div class="space-x-2">
+                    <div class="flex flex-row space-x-4">
+                      <div class="bg-[#EDF5FF] m-2 p-2 rounded-lg text-[#2F69F3] items-center">
+                        {item.code_number}
+                      </div>
+
+                      <div class="space-y-2">
+                        <h3 class="font-semibold">{item.country}</h3>
+                        <p class="inline-block bg-[rgba(30,186,9,0.16)] text-[#1EBA09] px-3 py-1 rounded-md text-sm mb-3">
+                          {item.status}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="flex space-x-2">
                       <button
                         class="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded border-[#989898] border-[1px]"
-                        onClick={() => setEditingTemplate(item)}
+                        onClick={() => setEditingTemplate(item)} // Set item yang akan diedit
                       >
                         Edit
                       </button>
                       <button
                         class="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded border-[#989898] border-[1px]"
-                        onClick={() => deleteGateway(item.id)}
+                        onClick={() => deleteTemplate(item.id)} // Hapus berdasarkan ID
                       >
                         Delete
                       </button>
                     </div>
                   </div>
-                  <div class="flex flex-row space-x-2">
-                    <p class="inline-block bg-[rgba(30,186,9,0.16)] text-[#1EBA09] px-3 py-1 rounded-md text-sm mb-3">
-                      {item.status}
-                    </p>
-                    <p class="inline-block bg-[#EBEBEB] text-[#313131] px-3 py-1 rounded-md text-sm mb-3">
-                      priority: {item.tagpriority}
-                    </p>
-                  </div>
-                  <p class="text-gray-600">failover: {item.content}</p>
                 </>
               }
             >
               <div>
-                <input
-                  type="text"
-                  value={editingTemplate()?.title}
+                <select
+                  value={editingTemplate()?.code_number}
                   onInput={(e) =>
                     setEditingTemplate({
                       ...editingTemplate(),
-                      title: e.target.value,
+                      code_number: e.target.value,
+                    })
+                  }
+                  class="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
+                >
+                  <option value="" disabled selected>
+                    select code number
+                  </option>
+                  <option value="+62">+62</option>
+                  <option value="+65">+65</option>
+                  <option value="+91">+91</option>
+                  <option value="+1">+1</option>
+                  <option value="+60">+60</option>
+                </select>
+                <input
+                  type="text"
+                  value={editingTemplate()?.country}
+                  onInput={(e) =>
+                    setEditingTemplate({
+                      ...editingTemplate(),
+                      country: e.target.value,
                     })
                   }
                   class="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
@@ -399,27 +407,7 @@ const Gateway = (props: GatewayProps) => {
                   }
                   class="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
                 />
-                <input
-                  type="text"
-                  value={editingTemplate()?.tagpriority}
-                  onInput={(e) =>
-                    setEditingTemplate({
-                      ...editingTemplate(),
-                      tagpriority: e.target.value,
-                    })
-                  }
-                  class="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
-                />
-                <textarea
-                  value={editingTemplate()?.content}
-                  onInput={(e) =>
-                    setEditingTemplate({
-                      ...editingTemplate(),
-                      content: e.target.value,
-                    })
-                  }
-                  class="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
-                />
+
                 <button
                   class="px-4 py-2 bg-[#0075FE] text-white rounded-lg mr-2"
                   onClick={saveEdit}
@@ -474,4 +462,4 @@ const Gateway = (props: GatewayProps) => {
   );
 };
 
-export default Gateway;
+export default CountryCodes;

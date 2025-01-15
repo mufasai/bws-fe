@@ -1,8 +1,8 @@
 import { Component, createSignal } from "solid-js";
 import { DashboardStats } from "../components/dashboard/DashboardStats";
-import { WorkforceOverview } from "../components/dashboard/WorkforceOverview";
-import { ScheduleTimeline } from "../components/dashboard/ScheduleTimeline";
-import { TaskDistribution } from "../components/dashboard/TaskDistribution";
+import FileUpload from "../components/dashboard/FileUpload";
+import InputSmsDirect from "../components/dashboard/InputSmsDirect";
+import ShowFile from "../components/dashboard/ShowFIle";
 
 const Dashboard: Component = () => {
   const [isLoading, setIsLoading] = createSignal(true);
@@ -11,55 +11,35 @@ const Dashboard: Component = () => {
   setTimeout(() => setIsLoading(false), 1000);
 
   return (
-    <div class="space-y-2">
-      <div class="flex justify-between items-center mb-4">
-        <h1 class="text-[3vh] font-inter font-bold text-gray-900 dark:text-white">
-          Overview
-        </h1>
-        <div class="flex ml-auto justify-end">
-          <div class="flex items-center justify-center">
-            <select class="text-[2vh] px-4 py-1 font-inter  bg-white rounded-full shadow-sm border-none text-gray-900 dark:text-white">
-              <option value="1">30 Days</option>
-              <option value="2">60 Days</option>
-              <option value="3">90 Days</option>
-              <option value="4">120 Days</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
+    <div class="p-6 bg-gray-100 min-h-screen">
       {isLoading() ? (
         <DashboardSkeleton />
       ) : (
-        <>
-          <DashboardStats />
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
-            <WorkforceOverview />
-            <TaskDistribution />
+        <div class="space-y-4">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <InputSmsDirect />
+            <FileUpload />
           </div>
-          <ScheduleTimeline />
-        </>
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <ShowFile />
+          </div>
+        </div>
       )}
     </div>
   );
 };
 
-const DashboardSkeleton: Component = () => {
-  return (
-    <div class="space-y-2 animate-pulse">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
-        {Array(4)
-          .fill(0)
-          .map(() => (
-            <div class="h-32 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
-          ))}
-      </div>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
-        <div class="h-96 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
-        <div class="h-96 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
-      </div>
+const DashboardSkeleton: Component = () => (
+  <div class="space-y-4 animate-pulse">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {Array(2)
+        .fill(0)
+        .map(() => (
+          <div class="h-48 bg-gray-200 rounded-lg"></div>
+        ))}
     </div>
-  );
-};
+    <div class="h-64 bg-gray-200 rounded-lg"></div>
+  </div>
+);
 
 export default Dashboard;

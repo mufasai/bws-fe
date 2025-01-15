@@ -3,27 +3,27 @@ import AgGridSolid from "ag-grid-solid";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
-const API_URL = "http://localhost:8080/api/provider-prefixes";
+const API_URL = "http://localhost:8080/api/sms-cost";
 
-interface ProviderPrefix {
+interface SmsCost {
   id: { id: { String: string } };
-  prefix: string;
   provider: string;
-  status: string;
+  cost: string;
+  currency: string;
 }
 
-const ProviderPrefixesTable = () => {
-  const [rowData, setRowData] = createSignal<ProviderPrefix[]>([]);
-  const [form, setForm] = createSignal<Partial<ProviderPrefix>>({
-    prefix: "",
+const SmsCostTable = () => {
+  const [rowData, setRowData] = createSignal<SmsCost[]>([]);
+  const [form, setForm] = createSignal<Partial<SmsCost>>({
     provider: "",
-    status: "Active",
+    cost: "",
+    currency: "IDR",
   });
   const [isModalOpen, setIsModalOpen] = createSignal(false);
 
   console.log("Form state:", form());
 
-  const fetchDataProviderPrefixes = async () => {
+  const fetchDataSmsCost = async () => {
     try {
       const response = await fetch(API_URL);
       if (!response.ok) {
@@ -32,9 +32,9 @@ const ProviderPrefixesTable = () => {
       const json = await response.json();
       const processedData = json.data.map((item: any) => ({
         id: { id: { String: item.id.id.String } },
-        prefix: item.prefix,
         provider: item.provider,
-        status: item.status,
+        cost: item.cost,
+        currency: item.currency,
       }));
       setRowData(processedData);
     } catch (error) {
@@ -51,7 +51,7 @@ const ProviderPrefixesTable = () => {
         body: JSON.stringify(form()),
       });
       if (response.ok) {
-        fetchDataProviderPrefixes();
+        fetchDataSmsCost();
         closeModal();
       } else {
         console.error("Failed to create data");
@@ -67,7 +67,7 @@ const ProviderPrefixesTable = () => {
         method: "DELETE",
       });
       if (response.ok) {
-        fetchDataProviderPrefixes();
+        fetchDataSmsCost();
         alert("Data deleted successfully!");
       } else {
         console.error("Failed to delete data");
@@ -77,7 +77,7 @@ const ProviderPrefixesTable = () => {
     }
   };
 
-  const updateDataProviderPrefixes = async () => {
+  const updateDataSmsCost = async () => {
     console.log("update data");
     if (!form().id) return;
     try {
@@ -85,13 +85,13 @@ const ProviderPrefixesTable = () => {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prefix: form()?.prefix,
           provider: form()?.provider,
-          status: form()?.status,
+          cost: form()?.cost,
+          currency: form()?.currency,
         }),
       });
       if (response.ok) {
-        fetchDataProviderPrefixes();
+        fetchDataSmsCost();
         closeModal();
         alert("Data updated successfully!");
       } else {
@@ -103,11 +103,11 @@ const ProviderPrefixesTable = () => {
   };
 
   const openModal = () => {
-    setForm({ prefix: "", provider: "", status: "Active" });
+    setForm({ provider: "", cost: "", currency: "IDR" });
     setIsModalOpen(true);
   };
 
-  const openEditModal = (row: ProviderPrefix) => {
+  const openEditModal = (row: SmsCost) => {
     setForm(row);
     setIsModalOpen(true);
   };
@@ -116,7 +116,7 @@ const ProviderPrefixesTable = () => {
     setIsModalOpen(false);
   };
 
-  const handleInputChange = (key: keyof ProviderPrefix, value: string) => {
+  const handleInputChange = (key: keyof SmsCost, value: string) => {
     setForm((prev) => ({
       ...prev,
       [key]: value,
@@ -124,17 +124,17 @@ const ProviderPrefixesTable = () => {
   };
 
   onMount(() => {
-    fetchDataProviderPrefixes();
+    fetchDataSmsCost();
   });
 
   const columnDefs = [
-    { field: "prefix", headerName: "Prefix", flex: 1 },
-    { field: "provider", headerName: "Provider", flex: 1 },
-    { field: "status", headerName: "Status", flex: 1 },
+    { field: "provider", headerName: "provider", flex: 1 },
+    { field: "cost", headerName: "cost", flex: 1 },
+    { field: "currency", headerName: "currency", flex: 1 },
     {
       headerName: "Action",
       flex: 1,
-      cellRenderer: (params: { data: ProviderPrefix }) => (
+      cellRenderer: (params: { data: SmsCost }) => (
         <div
           style={{ display: "flex", gap: "10px", "justify-content": "center" }}
         >
@@ -218,7 +218,7 @@ const ProviderPrefixesTable = () => {
   const handleSave = async () => {
     if (form().id) {
       // If form has an ID, it's an update operation
-      await updateDataProviderPrefixes();
+      await updateDataSmsCost();
     } else {
       // If form has no ID, it's a create operation
       await createData();
@@ -258,21 +258,10 @@ const ProviderPrefixesTable = () => {
           <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <div class="bg-white p-6 rounded-lg w-96">
               <h2 class="text-lg font-bold mb-4">
-                {form().id ? "Edit Prefix" : "Add New Prefix"}
+                {form().id ? "Edit SMS Cost" : "Add New SMS Cost"}
               </h2>
               {/* <form > */}
               <div class="flex flex-col gap-4">
-                <div>
-                  <label>Prefix:</label>
-                  <input
-                    type="text"
-                    value={form()?.prefix || ""}
-                    onChange={(e) =>
-                      handleInputChange("prefix", e.currentTarget.value)
-                    }
-                    class="w-full px-4 py-2 border-[#989898] border-[1px] rounded-lg"
-                  />
-                </div>
                 <div>
                   <label>Provider:</label>
                   <input
@@ -285,16 +274,27 @@ const ProviderPrefixesTable = () => {
                   />
                 </div>
                 <div>
-                  <label>Status:</label>
-                  <select
-                    value={form().status}
+                  <label>Cost:</label>
+                  <input
+                    type="text"
+                    value={form()?.cost || ""}
                     onChange={(e) =>
-                      handleInputChange("status", e.currentTarget.value)
+                      handleInputChange("cost", e.currentTarget.value)
+                    }
+                    class="w-full px-4 py-2 border-[#989898] border-[1px] rounded-lg"
+                  />
+                </div>
+                <div>
+                  <label>Currency:</label>
+                  <select
+                    value={form().currency}
+                    onChange={(e) =>
+                      handleInputChange("currency", e.currentTarget.value)
                     }
                     class="w-full px-4 py-2 border-[#989898] border-[1px] rounded-lg"
                   >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
+                    <option value="IDR">IDR</option>
+                    <option value="USD">USD</option>
                   </select>
                 </div>
               </div>
@@ -321,4 +321,4 @@ const ProviderPrefixesTable = () => {
   );
 };
 
-export default ProviderPrefixesTable;
+export default SmsCostTable;
