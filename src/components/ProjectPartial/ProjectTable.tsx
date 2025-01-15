@@ -18,11 +18,12 @@ import { getAllUserManagement } from "../../services/service";
 import "./ProjectTable.css";
 import { CreateProjectRequest } from "../../shared/share-interface";
 import { f } from "@solid-primitives/storage/dist/persisted-fWOjSMPO";
+import { UserData } from "../../pages/ProjectPage";
 // import { ColDef } from 'ag-grid-community';
 
 interface Props {
   filterEmptyIhld?: boolean;
-  onEdit: (workOrder: CreateProjectRequest) => void;
+  onEdit: (user: UserData) => void;
   onDelete: (workOrder: CreateProjectRequest) => void;
   onResetPassword: (WorkOrder: CreateProjectRequest) => void;
   onDetail: (workOrder: CreateProjectRequest) => void;
@@ -251,13 +252,8 @@ export default function UserManagemenetTable(props: Props) {
       cellRenderer: (params: any) => (
         <div class="flex gap-1">
           <button
-            onClick={() => {
-              const currentRowData = params.api.getRowNode(
-                params.rowIndex
-              ).data;
-              console.log("currentRowData ->", currentRowData);
-              props.onEdit(currentRowData);
-            }}
+            onClick={() => props.onEdit(params.data)}
+            
             class="p-1 text-blue-600 hover:bg-blue-100 rounded"
           >
             <svg
