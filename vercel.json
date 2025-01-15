@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
@@ -8,4 +9,16 @@
       "destination": "/index.html"
     }
   ]
+=======
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+>>>>>>> 6f6949f4938d86ba0e2c06119519abfba8adc3d1
 } 

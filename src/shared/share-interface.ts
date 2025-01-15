@@ -36,7 +36,7 @@ export interface CreateProjectRequest {
     psa: number,
     pic: number,
     unit: string,
-    cable_volume: string,
+    cable_volume: number,
     pole: number,
     port: number,
     service_price: number,

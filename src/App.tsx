@@ -1,20 +1,21 @@
 import { Component } from "solid-js";
 import { Router, Route, Navigate } from "@solidjs/router";
-import { useAuth } from "./store/auth.store"; 
-import Dashboard from "./pages/Dashboard"; 
-import Layout from "./components/layout/Layout"; 
-import "@thisbeyond/solid-select/style.css"; 
+import { useAuth } from "./store/auth.store";
+import Dashboard from "./pages/Dashboard";
+import Layout from "./components/layout/Layout";
+import "@thisbeyond/solid-select/style.css";
 import Login from "./pages/auth-page/Login";
-import Register from "./pages/auth-page/Register"; 
+import Register from "./pages/auth-page/Register";
 import ProjectPage from "./pages/ProjectPage";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const ProtectedRoute: Component<{ children: any }> = (props) => {
   const { authState } = useAuth();
-  
+
   if (!authState.isAuthenticated) {
     return <Navigate href="/login" />;
   }
-  
+
   return <Layout>{props.children}</Layout>;
 };
 
@@ -32,8 +33,8 @@ const App: Component = () => {
             </ProtectedRoute>
           )}
         />
-       
-          <Route
+
+        <Route
           path="/project"
           component={() => (
             <ProtectedRoute>
@@ -41,11 +42,19 @@ const App: Component = () => {
             </ProtectedRoute>
           )}
         />
-       
+        <Route
+          path="/adminDashboard"
+          component={() => (
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          )}
+        />
+
         <Route path="*" component={() => <Navigate href="/dashboard" />} />
       </Router>
     </div>
   );
 };
 
-export default App; 
+export default App;

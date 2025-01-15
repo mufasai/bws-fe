@@ -1,6 +1,6 @@
 
 import { dummyDataUserManagement } from '../shared/dummy-share';
-import { CreateProjectRequest, CreateUserRequest } from '../shared/share-interface';
+import { CreateProjectRequest, CreateUserRequest, UserData } from '../shared/share-interface';
  
 
 // const BASE_URL = '/src/assets/json/';
@@ -16,6 +16,23 @@ export const getAllUserManagement = async () => {
     console.log('Response:', response);
     if (!response.ok) throw new Error('Failed to fetch all user');
     const data = await response.json();
+    const processedData = data.data.map((item: any) => ({
+      id: { id: { String: item.id.id.String } },
+      username: item.username,
+      email: item.email,
+      password: item.password,
+      phone_number: item.phone_number,
+      role_id: item.role_id,
+      role_name: item.role_name,
+      role_description: item.role_description,
+      full_name: item.full_name,
+      address: item.address,
+      country: item.country,
+      city: item.city,
+      state: item.state,
+      country_code: item.country_code,
+      verification_status: item.verification_status
+    })); 
     console.log('Fetched Data:', data);
     return data;
   } catch (error) {
@@ -23,6 +40,9 @@ export const getAllUserManagement = async () => {
     throw error;
   }
 };
+
+
+
 // export const getUserID = async (user_id: number) => {
 //   try {
 //     const response = await fetch(`${BASE_URL}/users`);
@@ -53,7 +73,7 @@ export const LoginAPI = async (username: string, password: string) => {
 }
 
 
-export const CreateProjectAPI = async (data: CreateProjectRequest) => {
+export const CreateUserManagementAPI = async (data: UserData) => {
   try {
     const response = await fetch(`${BASE_URL}/project`, {
       method: 'POST',

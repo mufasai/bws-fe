@@ -25,7 +25,7 @@ const Table: Component<TableProps> = (props) => {
                 <th
                   scope="col"
                   class="px-6 py-3"
-                  style={{ width: column.width || 'auto' }}
+                  style={{ width: column.width || "auto" }}
                 >
                   {column.headerName}
                 </th>
@@ -75,4 +75,4 @@ const Table: Component<TableProps> = (props) => {
   );
 };
 
-export default Table; 
+export default Table;

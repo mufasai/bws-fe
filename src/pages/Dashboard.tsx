@@ -48,9 +48,11 @@ const DashboardSkeleton: Component = () => {
   return (
     <div class="space-y-2 animate-pulse">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
-        {Array(4).fill(0).map(() => (
-          <div class="h-32 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
-        ))}
+        {Array(4)
+          .fill(0)
+          .map(() => (
+            <div class="h-32 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+          ))}
       </div>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
         <div class="h-96 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
@@ -60,4 +62,4 @@ const DashboardSkeleton: Component = () => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;
