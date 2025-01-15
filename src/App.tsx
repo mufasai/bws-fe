@@ -8,6 +8,7 @@ import Login from "./pages/auth-page/Login";
 import Register from "./pages/auth-page/Register";
 import ProjectPage from "./pages/ProjectPage";
 import AdminDashboard from "./pages/AdminDashboard";
+import SpvDashboard from "./pages/SpvDashboard";
 
 const ProtectedRoute: Component<{ children: any }> = (props) => {
   const { authState } = useAuth();
@@ -47,6 +48,14 @@ const App: Component = () => {
           component={() => (
             <ProtectedRoute>
               <AdminDashboard />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/spvDashboard"
+          component={() => (
+            <ProtectedRoute>
+              <SpvDashboard />
             </ProtectedRoute>
           )}
         />

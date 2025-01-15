@@ -108,6 +108,48 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
         </svg>
       ),
     },
+    {
+      title: "SPV Dashboard",
+      path: "/spvDashboard",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24px"
+          height="24px"
+          viewBox="0 0 56 56"
+          fill={location.pathname === "/spvDashboard" ? "white" : "#989898"}
+        >
+          <path d="M28 4c13.255 0 24 10.745 24 24S41.255 52 28 52S4 41.255 4 28S14.745 4 28 4m0 4C16.954 8 8 16.954 8 28s8.954 20 20 20s20-8.954 20-20S39.046 8 28 8m.573 6.286v2.687c3.976.319 6.855 2.704 6.982 6.314h-3.308c-.207-2.004-1.638-3.165-3.674-3.419V26.5l.764.19c4.183.971 6.473 2.689 6.473 6.076c0 3.897-3.181 6.107-7.237 6.394v2.671h-1.797V39.16c-4.04-.303-7.236-2.577-7.347-6.394h3.292c.286 1.861 1.495 3.229 4.055 3.5V29.33l-.652-.16c-4.04-.937-6.218-2.75-6.218-5.979c0-3.563 2.862-5.916 6.87-6.219v-2.687zm0 15.458v6.537c2.72-.207 3.865-1.495 3.865-3.197c0-1.638-.89-2.608-3.865-3.34m-1.797-9.876c-2.29.286-3.499 1.606-3.499 3.054s.955 2.512 3.5 3.149z" />
+        </svg>
+      ),
+    },
+    {
+      title: "Audit Dashboard",
+      path: "/auditDashboard",
+      icon: (
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M4 18L4.0025 14.0215C4.0025 13.8889 4.05518 13.7617 4.14895 13.6679C4.24271 13.5742 4.36989 13.5215 4.5025 13.5215H9.5035C9.9645 13.5215 9.962 13.1125 9.962 12.1395C9.962 11.1665 7.511 10.347 7.511 6.9265C7.511 3.506 10.05 2.5 12.16 2.5C14.27 2.5 16.5685 3.506 16.5685 6.9265C16.5685 10.347 14.1305 10.891 14.1305 12.1395C14.1305 13.388 14.1305 13.5215 14.5205 13.5215H19.5005C19.6331 13.5215 19.7603 13.5742 19.8541 13.6679C19.9478 13.7617 20.0005 13.8889 20.0005 14.0215V18H4Z"
+            stroke="#989898"
+            stroke-width="2"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M4 21H20"
+            stroke="#989898"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      ),
+    },
   ];
 
   const toggleSidebar = () => {
@@ -171,36 +213,37 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
           {/* Navigation dengan icon yang lebih besar */}
           <nav class="flex-1 px-3 py-4 mt-12 space-y-4 justify-center overflow-y-auto">
             {menuItems.map((item) => (
-              <>
-                <A
-                  data-tooltip-target={`tooltip-${item.title}`}
-                  data-tooltip-placement="right"
-                  href={item.path}
-                  class={`flex items-center font-inter font-medium justify-start pl-2 py-2 text-[2vh]  rounded-full transition-colors ${
+              <A
+                data-tooltip-target={`tooltip-${item.title}`}
+                data-tooltip-placement="right"
+                href={item.path}
+                class={`flex items-center font-inter font-medium justify-start pl-2 py-2 text-[2vh] rounded-full transition-colors ${
+                  location.pathname === item.path
+                    ? "text-white bg-blue-500 dark:text-blue-300 dark:bg-blue-900/50"
+                    : "text-[#989898] hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                }`}
+              >
+                <div
+                  class={`w-8 h-4 flex items-center justify-center ${
                     location.pathname === item.path
-                      ? "text-white bg-blue-500 dark:text-blue-300 dark:bg-blue-900/50"
-                      : "text-[#989898] hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                      ? "text-white"
+                      : "text-[#989898] dark:text-gray-300"
                   }`}
                 >
-                  <div class="w-8 h-4 flex items-center justify-center">
-                    {item.icon}
-                  </div>
-                  <Show when={isSidebarOpen()}>
-                    <span class="ml-3">{item.title}</span>
-                  </Show>
-
-                  {/* <Show when={!props.isOpen}> */}
-                  <div
-                    id={`tooltip-${item.title}`}
-                    role="tooltip"
-                    class="absolute z-10 w-max invisible inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white shadow-lg rounded-lg  opacity-0 tooltip dark:bg-gray-700"
-                  >
-                    {item.title}
-                    <div class="tooltip-arrow" data-popper-arrow></div>
-                  </div>
-                  {/* </Show> */}
-                </A>
-              </>
+                  {item.icon}
+                </div>
+                <Show when={isSidebarOpen()}>
+                  <span class="ml-3">{item.title}</span>
+                </Show>
+                <div
+                  id={`tooltip-${item.title}`}
+                  role="tooltip"
+                  class="absolute z-10 w-max invisible inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white shadow-lg rounded-lg opacity-0 tooltip dark:bg-gray-700"
+                >
+                  {item.title}
+                  <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+              </A>
             ))}
           </nav>
 
