@@ -253,6 +253,7 @@ export default function UserManagemenetTable(props: Props) {
       headerName: "Verification_status",
       width: 180,
       cellRenderer: cellRendererStatus,
+      filter: "agTextColumnFilter",
     },
     {
       headerName: "Actions",

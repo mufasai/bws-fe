@@ -466,6 +466,24 @@ export default function ProjectPage() {
         api.onFilterChanged();
       }
     };
+  
+    const applyVerificationStatusFilter = (verification_status: string) => {
+      const api = gridApi();
+      if (api) {
+        if (verification_status === "All") {
+          api.setFilterModel(null); // Hapus filter
+        } else {
+          api.setFilterModel({
+            verification_status: {
+              filterType: "text",
+              type: "equals",
+              filter: verification_status,
+            }
+          });
+        }
+        api.onFilterChanged();
+      }
+    };
 
   const statusTabs = ["All", "Active", "Inactive"];
 
@@ -660,7 +678,10 @@ export default function ProjectPage() {
                         ? "text-gray-900 bg-white shadow-sm"
                         : "text-gray-600 hover:text-gray-900"
                         }`}
-                      onClick={() => setActivStatusTab(tab)}
+                      onClick={() => {
+                        setActivStatusTab(tab)
+                        applyVerificationStatusFilter(tab);
+                      }}
                     >
                       {tab}
                     </button>
