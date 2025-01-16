@@ -29,7 +29,10 @@ interface Props {
   onDetail: (workOrder: CreateProjectRequest) => void;
   onGridReady: (e: GridApi) => void;
   refreshData?: number;
+  
 }
+
+
 
 export default function UserManagemenetTable(props: Props) {
   const [gridApi, setGridApi] = createSignal<GridApi | null>(null);
@@ -56,6 +59,9 @@ export default function UserManagemenetTable(props: Props) {
       verification_status: item.verification_status,
     }));
   };
+
+  
+  
 
   createEffect(async () => {
     console.log("refreshData", props.refreshData);
@@ -203,6 +209,7 @@ export default function UserManagemenetTable(props: Props) {
       headerName: "Role_Name",
       width: 150,
       cellRenderer: cellRendererPhase,
+      filter: "agTextColumnFilter",
     },
     {
       field: "role_description",

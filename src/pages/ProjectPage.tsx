@@ -434,20 +434,38 @@ export default function ProjectPage() {
   const [activeStatusTab, setActivStatusTab] = createSignal("All");
 
   const tabs = ["All", "Admin", "User", "Supervisor"];
-  const renderContent = () => {
-    switch (activeTab()) {
-      case "All":
-        return <p>Displaying all users</p>;
-      case "Admin":
-        return <p>Displaying admin users</p>;
-      case "User":
-        return <p>Displaying general users</p>;
-      case "Supervisor":
-        return <p>Displaying supervisor users</p>;
-      default:
-        return <p>No data available</p>;
-    }
-  };
+  // const renderContent = () => {
+  //   switch (activeTab()) {
+  //     case "All":
+  //       return <p>Displaying all users</p>;
+  //     case "Admin":
+  //       return <p>Displaying admin users</p>;
+  //     case "User":
+  //       return <p>Displaying general users</p>;
+  //     case "Supervisor":
+  //       return <p>Displaying supervisor users</p>;
+  //     default:
+  //       return <p>No data available</p>;
+  //   }
+  // };
+
+  const applyRoleFilter = (role: string) => {
+      const api = gridApi();
+      if (api) {
+        if (role === "All") {
+          api.setFilterModel(null); // Hapus filter
+        } else {
+          api.setFilterModel({
+            role_name: {
+              filterType: "text",
+              type: "equals",
+              filter: role,
+            },
+          });
+        }
+        api.onFilterChanged();
+      }
+    };
 
   const statusTabs = ["All", "Active", "Inactive"];
 
@@ -619,11 +637,14 @@ export default function ProjectPage() {
                 <div class="flex items-center gap-2 p-1 bg-[#F2F2F2] rounded-lg">
                   {tabs.map((tab) => (
                     <button
-                      class={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ease-in-out relative  ${activeTab() === tab
+                      class={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ease-in-out ${activeTab() === tab
                         ? "text-gray-900 bg-white shadow-sm"
                         : "text-gray-600 hover:text-gray-900"
                         }`}
-                      onClick={() => setActiveTab(tab)}
+                      onClick={() => {
+                        setActiveTab(tab);
+                        applyRoleFilter(tab);
+                      }}
                     >
                       {tab}
                     </button>
@@ -701,7 +722,7 @@ export default function ProjectPage() {
               onDelete={handleDelete}
               onDetail={handleDetail}
               onResetPassword={handleResetPassword}
-              onGridReady={(e) => handleGridReady(e)}
+              onGridReady={(api) => setGridApi(api)}
               refreshData={refreshTrigger()}
             />
           </div>
@@ -778,11 +799,11 @@ export default function ProjectPage() {
                         }
                       >
                         <option value="" disabled selected>
-                            select role
+                          select role
                         </option>
                         <For each={groups()}>{(cat, i) =>
                           <>
-                          <option value={cat.id.id.String}>{cat.role_name}</option></>
+                            <option value={cat.id.id.String}>{cat.role_name}</option></>
                         }</For>
 
                       </select>
