@@ -3,24 +3,13 @@ import SMSReports from "../components/spv-dashboard/SmsReports";
 import SmsDirect from "../components/spv-dashboard/SmsDirect";
 import SmsBlast from "../components/spv-dashboard/SmsBlast";
 
-const DownloadIcon = () => (
-  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-    />
-  </svg>
-);
-
 function SpvDashboard() {
   const [tab, setTab] = createSignal("smsDirect");
 
   return (
     <div class="min-h-screen">
       {/* Main Content */}
-      <main class="max-w-7xl mx-auto p-6">
+      <main class="max-w-screen mx-auto p-6">
         {/* Tabs */}
         <div class="bg-white rounded-xl p-1 inline-flex mb-6 shadow-sm">
           <button
