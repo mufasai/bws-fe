@@ -38,7 +38,7 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
 
   const menuItems = [
     {
-      title: "Dashboard",
+      title: "Dashboard User",
       path: "/dashboard",
       icon: (
         <svg
@@ -63,7 +63,7 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
       ),
     },
     {
-      title: "Project",
+      title: "User Management",
       path: "/project",
       icon: (
         <svg
@@ -136,14 +136,18 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
         >
           <path
             d="M4 18L4.0025 14.0215C4.0025 13.8889 4.05518 13.7617 4.14895 13.6679C4.24271 13.5742 4.36989 13.5215 4.5025 13.5215H9.5035C9.9645 13.5215 9.962 13.1125 9.962 12.1395C9.962 11.1665 7.511 10.347 7.511 6.9265C7.511 3.506 10.05 2.5 12.16 2.5C14.27 2.5 16.5685 3.506 16.5685 6.9265C16.5685 10.347 14.1305 10.891 14.1305 12.1395C14.1305 13.388 14.1305 13.5215 14.5205 13.5215H19.5005C19.6331 13.5215 19.7603 13.5742 19.8541 13.6679C19.9478 13.7617 20.0005 13.8889 20.0005 14.0215V18H4Z"
-            stroke={location.pathname === "/auditDashboard" ? "white" : "#989898"} // Ubah outline berdasarkan kondisi
+            stroke={
+              location.pathname === "/auditDashboard" ? "white" : "#989898"
+            } // Ubah outline berdasarkan kondisi
             stroke-width="2"
             stroke-linejoin="round"
             fill="none" // Tidak ada fill
           />
           <path
             d="M4 21H20"
-            stroke={location.pathname === "/auditDashboard" ? "white" : "#989898"} // Ubah outline berdasarkan kondisi
+            stroke={
+              location.pathname === "/auditDashboard" ? "white" : "#989898"
+            } // Ubah outline berdasarkan kondisi
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -151,8 +155,7 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
           />
         </svg>
       ),
-    }
-    
+    },
   ];
 
   const toggleSidebar = () => {
