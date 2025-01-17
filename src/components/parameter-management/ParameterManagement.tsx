@@ -207,7 +207,7 @@ const ParameterManagement = () => {
   };
 
   return (
-    <div class=" max-w-[1200px] mx-auto">
+    <div class=" max-w-screen mx-auto">
       {/* Header */}
       {/* Main Content Grid */}
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

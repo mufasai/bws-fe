@@ -46,7 +46,7 @@ const AuditDashboard = () => {
 
   return (
     <div class="min-h-screen bg-gray-100 p-6">
-      <div class="max-w-7xl mx-auto">
+      <div class="max-w-screen mx-auto">
         {/* Header */}
         <div class="mb-8">
           <h1 class="text-3xl font-bold text-gray-800">Dashboard Audit</h1>
@@ -54,7 +54,7 @@ const AuditDashboard = () => {
         </div>
 
         {/* Main Content */}
-        <div class="bg-white rounded-lg shadow-lg p-6">
+        <div class="bg-white rounded-2xl shadow-lg p-6">
           {/* Tabs */}
           <div class="flex space-x-4 mb-6 border-b">
             <button
@@ -79,12 +79,12 @@ const AuditDashboard = () => {
 
           {/* Filters and Actions */}
           <div class="flex justify-between mb-6">
-            <div class="flex space-x-4">
+            <div class="flex space-x-4 ">
               <div class="relative">
                 <input
                   type="text"
-                  placeholder="Cari..."
-                  class="pl-10 pr-4 py-2 border rounded-lg"
+                  placeholder="Search..."
+                  class="pl-10 pr-4 py-2 border rounded-lg s"
                   value={searchQuery()}
                   onInput={(e) => setSearchQuery(e.target.value)}
                 />

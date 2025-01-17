@@ -63,8 +63,8 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
       ),
     },
     {
-      title: "Project",
-      path: "/project",
+      title: "User Management",
+      path: "/userManagement",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"

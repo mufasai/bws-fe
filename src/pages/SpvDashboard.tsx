@@ -20,7 +20,7 @@ function SpvDashboard() {
   return (
     <div class="min-h-screen">
       {/* Main Content */}
-      <main class="max-w-7xl mx-auto p-6">
+      <main class="max-w-screen mx-auto p-6">
         {/* Tabs */}
         <div class="bg-white rounded-xl p-1 inline-flex mb-6 shadow-sm">
           <button

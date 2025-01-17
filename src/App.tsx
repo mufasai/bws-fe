@@ -37,7 +37,7 @@ const App: Component = () => {
         />
 
         <Route
-          path="/project"
+          path="/userManagement"
           component={() => (
             <ProtectedRoute>
               <ProjectPage />
