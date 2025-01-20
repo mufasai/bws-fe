@@ -24,7 +24,7 @@ const DownloadIcon = () => (
 const SmsBlast = () => {
   return (
     <>
-      <div>
+      <div class="w-[100%]">
         <div class="flex justify-between items-center mb-6">
           <div>
             <h2 class="text-2xl font-semibold text-gray-800">
@@ -50,7 +50,7 @@ const SmsBlast = () => {
           </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="bg-white rounded-xl shadow-sm overflow-auto">
           <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
               <tr>
