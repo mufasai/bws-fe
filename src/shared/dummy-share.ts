@@ -379,3 +379,28 @@ export const dummyDataUserManagement = [
     }
   ]
 
+
+export const AuditData = [
+    {
+      "id": 1,
+      "username": "admin123",
+      "actvity": "Login",
+      "timestamp": "2024-06-28 09:00:00",
+      "details": "User admin123 logged in"
+    },
+    {
+      "id": 2,
+      "username": "supervisor1",
+      "actvity": "Logout",
+      "timestamp": "2024-06-28 09:30:00",
+      "details": "User supervisor1 logged out"
+    },
+    {
+      "id": 3,
+      "username": "tech_jkt1",
+      "actvity": "Login",
+      "timestamp": "2024-06-28 09:45:00",
+      "details": "User tech_jkt1 logged in"
+    }
+]
+

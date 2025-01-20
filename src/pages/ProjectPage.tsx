@@ -1,7 +1,6 @@
 import { createSignal, For, onMount, Show } from "solid-js";
 import type { WorkOrder } from "../types/workOrder";
 // import { ScheduleList } from '../components/schedule/ScheduleList';
-import WorkOrderTable from "../components/ProjectPartial/ProjectTable";
 import { CgExport } from "solid-icons/cg";
 import { VsSearch } from "solid-icons/vs";
 import { GridApi } from "ag-grid-community";

@@ -1,5 +1,6 @@
 import { createSignal, createEffect } from 'solid-js';
 import { FiDownload, FiActivity, FiSettings, FiSearch, FiCalendar } from 'solid-icons/fi';
+import AuditTrailTable from '../components/Audit/AuditTrailTable';
 
 const AuditDashboard = () => {
   const [auditLogs, setAuditLogs] = createSignal([
@@ -120,27 +121,8 @@ const AuditDashboard = () => {
 
           {/* Content */}
           {activeTab() === 'audit' ? (
-            <div class="overflow-x-auto">
-              <table class="min-w-full">
-                <thead>
-                  <tr class="bg-gray-50">
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aktivitas</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detail</th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                  {auditLogs().map((log) => (
-                    <tr>
-                      <td class="px-6 py-4 whitespace-nowrap">{log.username}</td>
-                      <td class="px-6 py-4 whitespace-nowrap">{log.activity}</td>
-                      <td class="px-6 py-4 whitespace-nowrap">{log.timestamp}</td>
-                      <td class="px-6 py-4 whitespace-nowrap">{log.details}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div class="overflow-x-auto min-w-full">
+              <AuditTrailTable />
             </div>
           ) : (
             <div class="overflow-x-auto">

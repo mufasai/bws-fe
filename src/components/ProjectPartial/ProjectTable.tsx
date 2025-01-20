@@ -29,7 +29,6 @@ interface Props {
   onDetail: (workOrder: CreateProjectRequest) => void;
   onGridReady: (e: GridApi) => void;
   refreshData?: number;
-  
 }
 
 
