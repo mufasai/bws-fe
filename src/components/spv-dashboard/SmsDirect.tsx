@@ -25,8 +25,8 @@ const DownloadIcon = () => (
 const SmsDirect = () => {
   return (
     <>
-      <div>
-        <div class="flex justify-between items-center mb-6">
+      <div class="w-[100%]">
+        <div class="flex justify-between items-center ">
           <div>
             <h2 class="text-2xl font-semibold text-gray-800">
               Direct SMS Authorization
@@ -51,7 +51,7 @@ const SmsDirect = () => {
           </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="bg-white rounded-xl shadow-sm overflow-auto">
           <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
               <tr>
@@ -157,8 +157,8 @@ const SmsDirect = () => {
               </tr>
             </tbody>
           </table>
-          <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
-            <div class="flex items-center justify-between">
+          <div class="w-full bg-gray-50 px-6 py-4 border-t border-gray-200">
+            <div class="flex items-center justify-between w-full">
               <div class="text-sm text-gray-500">
                 Showing 1 to 10 of 20 entries
               </div>
