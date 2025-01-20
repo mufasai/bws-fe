@@ -129,8 +129,8 @@ const SpvDashboard = () => {
   ];
 
   return (
-    <div class="min-h-screen">
-      <div class="max-w-6xl mx-auto">
+    <div class="min-h-screen mt-6">
+      <div class="max-w-screen mx-auto">
         <div class="space-y-6">
           {/* Reports Section */}
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
