@@ -179,19 +179,19 @@ const SmsBlast = () => {
               </tr>
             </tbody>
           </table>
-          <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
-            <div class="flex items-center justify-between">
-              <div class="text-sm text-gray-500">
-                Showing 1 to 10 of 20 entries
-              </div>
-              <div class="flex space-x-2">
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                  Previous
-                </button>
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                  Next
-                </button>
-              </div>
+        </div>
+        <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+          <div class="flex items-center justify-between">
+            <div class="text-sm text-gray-500">
+              Showing 1 to 10 of 20 entries
+            </div>
+            <div class="flex space-x-2">
+              <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Previous
+              </button>
+              <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Next
+              </button>
             </div>
           </div>
         </div>
