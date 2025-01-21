@@ -47,7 +47,7 @@ const Navbar: Component<{
               </svg>
             </button>
             <div class="flex items-center space-x-3">
-              <div class="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center">
+              <div class="h-8 w-8 bg-[#FF934F] rounded-lg flex items-center justify-center">
                 <span class="text-white font-bold">D</span>
               </div>
               <span class="text-xl font-semibold text-gray-800 dark:text-white">
