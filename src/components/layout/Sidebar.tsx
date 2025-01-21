@@ -226,7 +226,7 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
                 href={item.path}
                 class={`flex items-center font-inter font-medium justify-start pl-2 py-2 text-[2vh] rounded-full transition-colors ${
                   location.pathname === item.path
-                    ? "text-white bg-blue-500 dark:text-blue-300 dark:bg-blue-900/50"
+                    ? "text-white bg-[#FF934F] dark:text-blue-300 dark:bg-blue-900/50"
                     : "text-[#989898] hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                 }`}
               >
