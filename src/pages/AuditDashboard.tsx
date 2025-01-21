@@ -94,20 +94,11 @@ const AuditDashboard = () => {
                 <input
                   type="text"
                   placeholder="Search..."
-                  class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg"
+                  class="pl-10 pr-2 py-2 border border-gray-200 rounded-lg"
                   value={searchQuery()}
                   onInput={(e) => setSearchQuery(e.target.value)}
                 />
                 <FiSearch class="absolute left-3 top-3 text-gray-400" />
-              </div>
-              <div class="relative">
-                <input
-                  type="date"
-                  class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg"
-                  value={dateFilter()}
-                  onChange={(e) => setDateFilter(e.target.value)}
-                />
-                <FiCalendar class="absolute left-3 top-3 text-gray-400" />
               </div>
             </div>
             <div class="flex space-x-3">
@@ -158,15 +149,6 @@ const AuditDashboard = () => {
                   onInput={(e) => setSearchQuery(e.target.value)}
                 />
                 <FiSearch class="absolute left-3 top-3 text-gray-400" />
-              </div>
-              <div class="relative">
-                <input
-                  type="date"
-                  class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg"
-                  value={dateFilter()}
-                  onChange={(e) => setDateFilter(e.target.value)}
-                />
-                <FiCalendar class="absolute left-3 top-3 text-gray-400" />
               </div>
             </div>
             <div class="flex space-x-3">
