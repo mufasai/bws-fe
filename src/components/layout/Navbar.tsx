@@ -1,4 +1,5 @@
-import { Component, createSignal } from "solid-js";
+import { Component, createSignal, onMount, Show } from "solid-js";
+import { onCleanup } from "solid-js";
 
 const Navbar: Component<{
   onToggleSidebar: () => void;
@@ -7,6 +8,17 @@ const Navbar: Component<{
   const [showNotifications, setShowNotifications] = createSignal(false);
   const [showUserMenu, setShowUserMenu] = createSignal(false);
   const [isDarkMode, setIsDarkMode] = createSignal(false);
+
+  onMount(() => {
+    const handleClickOutside = (event: any) => {
+      if (!event.target.closest(".relative")) {
+        setShowUserMenu(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    onCleanup(() => document.removeEventListener("click", handleClickOutside));
+  });
 
   return (
     <nav class="w-full bg-white dark:bg-gray-900 shadow-lg">
@@ -127,6 +139,33 @@ const Navbar: Component<{
                 </svg>
                 <span class="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
               </button>
+
+              {/* Notification Popup */}
+              <Show when={showNotifications()}>
+                <div class="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 z-10">
+                  <h4 class="text-gray-800 dark:text-white font-semibold mb-2">
+                    Notifications
+                  </h4>
+                  <ul class="space-y-2">
+                    <li class="p-2 bg-[#9482FE29] dark:bg-gray-700 rounded-lg">
+                      <p class="text-sm text-gray-700 dark:text-gray-300">
+                        New comment on your post.
+                      </p>
+                      <span class="text-xs text-gray-500 dark:text-gray-400">
+                        2 minutes ago
+                      </span>
+                    </li>
+                    <li class="p-2 bg-[#FF934F29] dark:bg-gray-700 rounded-lg">
+                      <p class="text-sm text-gray-700 dark:text-gray-300">
+                        Your report is ready to download.
+                      </p>
+                      <span class="text-xs text-gray-500 dark:text-gray-400">
+                        10 minutes ago
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </Show>
             </div>
 
             <div class="relative">
@@ -161,6 +200,67 @@ const Navbar: Component<{
                   />
                 </svg>
               </button>
+
+              {/* Profile Popup */}
+              <Show when={showUserMenu()}>
+                <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 z-10">
+                  <ul class="space-y-2">
+                    <li class="flex flex-row block p-2 space-x-2 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 rounded-lg">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20px"
+                        height="20px"
+                        viewBox="0 0 24 24"
+                        class="my-auto"
+                      >
+                        <g
+                          fill="#000000"
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                        >
+                          <path d="M16 9a4 4 0 1 1-8 0a4 4 0 0 1 8 0m-2 0a2 2 0 1 1-4 0a2 2 0 0 1 4 0" />
+                          <path d="M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11s11-4.925 11-11S18.075 1 12 1M3 12c0 2.09.713 4.014 1.908 5.542A8.99 8.99 0 0 1 12.065 14a8.98 8.98 0 0 1 7.092 3.458A9 9 0 1 0 3 12m9 9a8.96 8.96 0 0 1-5.672-2.012A6.99 6.99 0 0 1 12.065 16a6.99 6.99 0 0 1 5.689 2.92A8.96 8.96 0 0 1 12 21" />
+                        </g>
+                      </svg>
+                      <a href="/profile" class="">
+                        View Profile
+                      </a>
+                    </li>
+                    <li class="flex flex-row block p-2 space-x-2 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 rounded-lg">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20px"
+                        height="20px"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="#000"
+                          d="M19.9 12.66a1 1 0 0 1 0-1.32l1.28-1.44a1 1 0 0 0 .12-1.17l-2-3.46a1 1 0 0 0-1.07-.48l-1.88.38a1 1 0 0 1-1.15-.66l-.61-1.83a1 1 0 0 0-.95-.68h-4a1 1 0 0 0-1 .68l-.56 1.83a1 1 0 0 1-1.15.66L5 4.79a1 1 0 0 0-1 .48L2 8.73a1 1 0 0 0 .1 1.17l1.27 1.44a1 1 0 0 1 0 1.32L2.1 14.1a1 1 0 0 0-.1 1.17l2 3.46a1 1 0 0 0 1.07.48l1.88-.38a1 1 0 0 1 1.15.66l.61 1.83a1 1 0 0 0 1 .68h4a1 1 0 0 0 .95-.68l.61-1.83a1 1 0 0 1 1.15-.66l1.88.38a1 1 0 0 0 1.07-.48l2-3.46a1 1 0 0 0-.12-1.17ZM18.41 14l.8.9l-1.28 2.22l-1.18-.24a3 3 0 0 0-3.45 2L12.92 20h-2.56L10 18.86a3 3 0 0 0-3.45-2l-1.18.24l-1.3-2.21l.8-.9a3 3 0 0 0 0-4l-.8-.9l1.28-2.2l1.18.24a3 3 0 0 0 3.45-2L10.36 4h2.56l.38 1.14a3 3 0 0 0 3.45 2l1.18-.24l1.28 2.22l-.8.9a3 3 0 0 0 0 3.98m-6.77-6a4 4 0 1 0 4 4a4 4 0 0 0-4-4m0 6a2 2 0 1 1 2-2a2 2 0 0 1-2 2"
+                        />
+                      </svg>
+                      <a href="/settings" class="">
+                        Settings
+                      </a>
+                    </li>
+                    <li class="flex flex-row block p-2 space-x-2 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 rounded-lg">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20px"
+                        height="20px"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="#000"
+                          d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"
+                        />
+                      </svg>
+                      <button onClick={() => console.log("Logged out")}>
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </Show>
             </div>
           </div>
         </div>
