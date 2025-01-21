@@ -261,7 +261,7 @@ const Gateway = (props: GatewayProps) => {
         </div>
         <button
           onClick={openPopup}
-          class="px-4 py-2 bg-[#0075FE] text-white rounded-lg flex items-center gap-2"
+          class="px-4 py-2 bg-[#FF934F] text-white rounded-lg flex items-center gap-2"
         >
           + Add New
         </button>
@@ -328,7 +328,7 @@ const Gateway = (props: GatewayProps) => {
               </button>
               <button
                 onClick={addGateway}
-                class="px-4 py-2 bg-[#0075FE] text-white rounded-lg"
+                class="px-4 py-2 bg-[#FF934F] text-white rounded-lg"
               >
                 Save
               </button>
@@ -421,7 +421,7 @@ const Gateway = (props: GatewayProps) => {
                   class="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
                 />
                 <button
-                  class="px-4 py-2 bg-[#0075FE] text-white rounded-lg mr-2"
+                  class="px-4 py-2 bg-[#FF934F] text-white rounded-lg mr-2"
                   onClick={saveEdit}
                 >
                   Save

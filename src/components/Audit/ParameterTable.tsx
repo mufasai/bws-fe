@@ -17,9 +17,9 @@ import { GridReadyEvent } from "ag-grid-community";
 import "./AuditTrailTable.css";
 import { f } from "@solid-primitives/storage/dist/persisted-fWOjSMPO";
 // import { ColDef } from 'ag-grid-community';
-import { AuditData } from "../../shared/dummy-share";
+import { ParameterData } from "../../shared/dummy-share";
 
-export default function AuditTrailTable () {
+export default function ParameterTable () {
   const [gridApi, setGridApi] = createSignal<GridApi | null>(null);
   const [isLoading, setIsLoading] = createSignal<boolean>(true);
 
@@ -124,25 +124,20 @@ export default function AuditTrailTable () {
       hide: true,
     },
     {
-      field: "username",
-      headerName: "Username",
-      width: 150,
-    },
-    {
-      field: "activity",
-      headerName: "Activity",
-      width: 150,
-    },
-    {
-      field: "timestamp",
-      headerName: "Timestamp",
-      width: 150,
-    },
-    {
-      field: "details",
-      headerName: "Details",
+      field: "name",
+      headerName: "Name",
       width: 200,
     },
+    {
+      field: "value",
+      headerName: "Value",
+      width: 200,
+    },
+    {
+      field: "lastupdate",
+      headerName: "Last Update",
+      width: 270,
+    }
   ];
 
   const defaultColDef = {
@@ -170,7 +165,7 @@ export default function AuditTrailTable () {
       </Show> */}
       <AgGridSolid
         columnDefs={columnDefs as any}
-        rowData={AuditData}
+        rowData={ParameterData}
         defaultColDef={defaultColDef}
         class="rounded-lg border ag-theme-alpine dark:ag-theme-alpine-dark border-gray-200"
         animateRows={true}

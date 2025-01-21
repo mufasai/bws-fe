@@ -238,7 +238,7 @@ const SmsCostTable = () => {
             <span class="absolute right-3 top-2.5">🔍</span>
           </div>
           <button
-            class="px-4 py-2 bg-[#0075FE] text-white rounded-lg flex items-center gap-2"
+            class="px-4 py-2 bg-[#FF934F] text-white rounded-lg flex items-center gap-2"
             onClick={openModal}
           >
             + Add New
@@ -307,7 +307,7 @@ const SmsCostTable = () => {
                 </button>
                 <button
                   onClick={handleSave}
-                  class="px-4 py-2 bg-[#0075FE] text-white rounded-lg"
+                  class="px-4 py-2 bg-[#FF934F] text-white rounded-lg"
                 >
                   Save
                 </button>

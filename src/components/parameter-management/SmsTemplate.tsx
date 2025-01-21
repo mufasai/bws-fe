@@ -259,7 +259,7 @@ const SmsTemplate = (props: SmsTemplateProps) => {
         </div>
         <button
           onClick={openPopup}
-          class="px-4 py-2 bg-[#0075FE] text-white rounded-lg flex items-center gap-2"
+          class="px-4 py-2 bg-[#FF934F] text-white rounded-lg flex items-center gap-2"
         >
           + Add New
         </button>
@@ -329,7 +329,7 @@ const SmsTemplate = (props: SmsTemplateProps) => {
               </button>
               <button
                 onClick={addSmsTemplate}
-                class="px-4 py-2 bg-[#0075FE] text-white rounded-lg"
+                class="px-4 py-2 bg-[#FF934F] text-white rounded-lg"
               >
                 Save
               </button>
@@ -365,7 +365,7 @@ const SmsTemplate = (props: SmsTemplateProps) => {
                       </button>
                     </div>
                   </div>
-                  <span class="inline-block bg-[#EBF3FF] text-[#0075FE] px-3 py-1 rounded-md text-sm mb-3">
+                  <span class="inline-block bg-[#FF934F20] text-[#FF934F] px-3 py-1 rounded-md text-sm mb-3">
                     {item.content_type}
                   </span>
                   <p class="text-gray-600">{item.content}</p>
@@ -417,7 +417,7 @@ const SmsTemplate = (props: SmsTemplateProps) => {
                   class="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
                 />
                 <button
-                  class="px-4 py-2 bg-[#0075FE] text-white rounded-lg mr-2"
+                  class="px-4 py-2 bg-[#FF934F] text-white rounded-lg mr-2"
                   onClick={saveEditSmsTemplate}
                 >
                   Save

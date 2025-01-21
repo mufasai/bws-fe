@@ -38,7 +38,7 @@ const StatItem = (props: any) => (
 
 // Components/DownloadButton.tsx
 const DownloadButton = () => (
-  <button class="w-full mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center justify-center">
+  <button class="w-full mt-4 bg-[#FF934F] text-white px-4 py-2 rounded-lg hover:bg-[#E76B1E] flex items-center justify-center">
     <span class="mr-2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +101,7 @@ const ReportCard = ({
   <div class="bg-white rounded-xl shadow-sm p-6">
     <div class="flex justify-between items-center mb-4">
       <h3 class="text-xl font-semibold text-gray-800">{title}</h3>
-      <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full">
+      <span class="bg-[#FF934F29] text-[#FF934F] text-xs font-semibold px-3 py-1 rounded-full">
         Last 30 days
       </span>
     </div>

@@ -1,11 +1,35 @@
 import { createSignal, createEffect } from 'solid-js';
 import { FiDownload, FiActivity, FiSettings, FiSearch, FiCalendar } from 'solid-icons/fi';
 import AuditTrailTable from '../components/Audit/AuditTrailTable';
+import ParameterTable from '../components/Audit/ParameterTable';
 
 const AuditDashboard = () => {
+
+  const FilterIcon = () => (
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+      />
+    </svg>
+  );
+
+  const DownloadIcon = () => (
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+      />
+    </svg>
+  );
+
   const [auditLogs, setAuditLogs] = createSignal([
-    { 
-      id: 1, 
+    {
+      id: 1,
       username: 'john_doe',
       activity: 'Login',
       timestamp: '2025-01-16 09:30:00',
@@ -47,45 +71,30 @@ const AuditDashboard = () => {
 
   return (
     <div class="min-h-screen bg-gray-100 p-6">
-      <div class="max-w-screen mx-auto">
-        {/* Header */}
-        <div class="mb-8">
-          <h1 class="text-3xl font-bold text-gray-800">Dashboard Audit</h1>
-          <p class="text-gray-600 mt-2">Pantau dan rekam semua aktivitas sistem</p>
-        </div>
-
-        {/* Main Content */}
-        <div class="bg-white rounded-2xl shadow-lg p-6">
-          {/* Tabs */}
-          <div class="flex space-x-4 mb-6 border-b">
-            <button
-              class={`pb-2 px-4 ${activeTab() === 'audit' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
-              onClick={() => setActiveTab('audit')}
-            >
-              <div class="flex items-center space-x-2">
-                <FiActivity />
-                <span>Audit Trail</span>
+      <div class="max-w-screen mx-auto mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Audit Trail */}
+        <div class="bg-white rounded-2xl shadow-sm p-6">
+          {/* Title */}
+          <div class="mb-6">
+            <div class="flex justify-between items-center ">
+              <div>
+                <h2 class="text-2xl font-semibold text-gray-800">
+                  Audit Trail
+                </h2>
+                <p class="mt-1 text-gray-600">
+                  Monitor user activities like login, data management, SMS submission, and SPV authorization.
+                </p>
               </div>
-            </button>
-            <button
-              class={`pb-2 px-4 ${activeTab() === 'parameters' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
-              onClick={() => setActiveTab('parameters')}
-            >
-              <div class="flex items-center space-x-2">
-                <FiSettings />
-                <span>Parameter</span>
-              </div>
-            </button>
+            </div>
           </div>
-
           {/* Filters and Actions */}
           <div class="flex justify-between mb-6">
-            <div class="flex space-x-4 ">
+            <div class="flex space-x-3">
               <div class="relative">
                 <input
                   type="text"
                   placeholder="Search..."
-                  class="pl-10 pr-4 py-2 border rounded-lg s"
+                  class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg"
                   value={searchQuery()}
                   onInput={(e) => setSearchQuery(e.target.value)}
                 />
@@ -94,58 +103,91 @@ const AuditDashboard = () => {
               <div class="relative">
                 <input
                   type="date"
-                  class="pl-10 pr-4 py-2 border rounded-lg"
+                  class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg"
                   value={dateFilter()}
                   onChange={(e) => setDateFilter(e.target.value)}
                 />
                 <FiCalendar class="absolute left-3 top-3 text-gray-400" />
               </div>
             </div>
-            <div class="flex space-x-2">
-              <button
-                onClick={() => handleDownload('pdf')}
-                class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex items-center space-x-2"
-              >
-                <FiDownload />
-                <span>Unduh PDF</span>
+            <div class="flex space-x-3">
+              <button class="flex items-center px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50">
+                <span class="mr-2">
+                  <FilterIcon />
+                </span>
+                Filter
               </button>
-              <button
-                onClick={() => handleDownload('excel')}
-                class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 flex items-center space-x-2"
-              >
-                <FiDownload />
-                <span>Unduh Excel</span>
+              <button class="flex items-center px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50">
+                <span class="mr-2">
+                  <DownloadIcon />
+                </span>
+                Export
               </button>
             </div>
           </div>
-
           {/* Content */}
-          {activeTab() === 'audit' ? (
-            <div class="overflow-x-auto min-w-full">
-              <AuditTrailTable />
+          <div class="overflow-x-auto bg-white w-[100%] rounded-xl shadow-sm">
+            <AuditTrailTable />
+          </div>
+        </div>
+
+        {/* Parameter */}
+        <div class="bg-white rounded-2xl shadow-sm p-6">
+          {/* Title */}
+          <div class="mb-6">
+            <div class="flex justify-between items-center ">
+              <div>
+                <h2 class="text-2xl font-semibold text-gray-800">
+                  Parameter
+                </h2>
+                <p class="mt-1 text-gray-600">
+                  Monitor user activities like login, data management, SMS submission, and SPV authorization.
+                </p>
+              </div>
             </div>
-          ) : (
-            <div class="overflow-x-auto">
-              <table class="min-w-full">
-                <thead>
-                  <tr class="bg-gray-50">
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parameter</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nilai</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Terakhir Diperbarui</th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                  {parameters().map((param) => (
-                    <tr>
-                      <td class="px-6 py-4 whitespace-nowrap">{param.name}</td>
-                      <td class="px-6 py-4 whitespace-nowrap">{param.value}</td>
-                      <td class="px-6 py-4 whitespace-nowrap">{param.lastUpdated}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          </div>
+          {/* Filters and Actions */}
+          <div class="flex justify-between mb-6">
+            <div class="flex space-x-3">
+              <div class="relative">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg"
+                  value={searchQuery()}
+                  onInput={(e) => setSearchQuery(e.target.value)}
+                />
+                <FiSearch class="absolute left-3 top-3 text-gray-400" />
+              </div>
+              <div class="relative">
+                <input
+                  type="date"
+                  class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg"
+                  value={dateFilter()}
+                  onChange={(e) => setDateFilter(e.target.value)}
+                />
+                <FiCalendar class="absolute left-3 top-3 text-gray-400" />
+              </div>
             </div>
-          )}
+            <div class="flex space-x-3">
+              <button class="flex items-center px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50">
+                <span class="mr-2">
+                  <FilterIcon />
+                </span>
+                Filter
+              </button>
+              <button class="flex items-center px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50">
+                <span class="mr-2">
+                  <DownloadIcon />
+                </span>
+                Export
+              </button>
+            </div>
+          </div>
+          {/* Content */}
+          <div class="overflow-x-auto bg-white w-[100%] rounded-xl shadow-sm">
+            <ParameterTable />
+          </div>
         </div>
       </div>
     </div>

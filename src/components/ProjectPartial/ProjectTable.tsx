@@ -86,13 +86,13 @@ export default function UserManagemenetTable(props: Props) {
 
   const cellRendererPhase = (params: ICellRendererParams) => {
     const color: any = {
-      admin: "#FF934F",
-      user: "#F5ED32",
+      admin: "#FF4480",
+      user: "#FFD700",
       supervisor: "#9482FE",
     };
     const bgColor: any = {
-      admin: "#FF934F29",
-      user: "#F5ED3229",
+      admin: "#FF448029",
+      user: "#FFD70029",
       supervisor: "#9482FE29",
     };
     return (
