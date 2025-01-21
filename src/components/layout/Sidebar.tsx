@@ -172,7 +172,8 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
       <aside
         class={`h-full transition-all duration-300 ${
           isSidebarOpen() ? "w-[15vw]" : "w-[70px]"
-        } bg-white dark:bg-gray-800 shadow-lg`}
+        } bg-white dark:bg-gray-800 shadow-lg hidden md:block`}
+        /* Tambahkan hidden untuk mobile */
       >
         <div class="flex flex-col h-full">
           {/* Header dengan Logo */}
@@ -216,7 +217,7 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
             </div>
           </div>
 
-          {/* Navigation dengan icon yang lebih besar */}
+          {/* Navigation */}
           <nav class="flex-1 px-3 py-4 mt-12 space-y-4 justify-center overflow-y-auto">
             {menuItems.map((item) => (
               <A
@@ -252,8 +253,6 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
               </A>
             ))}
           </nav>
-
-          {/* Footer dengan fungsi logout yang sudah diperbarui */}
         </div>
       </aside>
     </>

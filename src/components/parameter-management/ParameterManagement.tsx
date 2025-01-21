@@ -214,7 +214,7 @@ const ParameterManagement = () => {
         {/* Left Section - 2 columns */}
         <div class="lg:col-span-2 bg-white p-4 rounded-lg">
           {/* Tabs */}
-          <div class="bg-white rounded-lg p-4 mb-4 flex gap-4">
+          <div class="bg-white rounded-lg p-4 mb-4 flex gap-4 lg:overflow-hidden overflow-auto">
             {tabs.map((tab) => (
               <button
                 onClick={() => handleTabClick(tab.id)}

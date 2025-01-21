@@ -23,7 +23,7 @@ const ProtectedRoute: Component<{ children: any }> = (props) => {
 
 const App: Component = () => {
   return (
-    <div class="min-h-screen">
+    <div class="min-h-screen ">
       <Router>
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
@@ -60,7 +60,7 @@ const App: Component = () => {
             </ProtectedRoute>
           )}
         />
-          <Route
+        <Route
           path="/auditDashboard"
           component={() => (
             <ProtectedRoute>
