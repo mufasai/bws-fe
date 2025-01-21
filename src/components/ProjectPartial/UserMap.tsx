@@ -41,8 +41,8 @@ export const UserMap: Component = () => {
 
     series.set("colors", am5.ColorSet.new(root, {
       colors: [
-          am5.color("#FF934F"),
-          am5.color("#F5ED32"),
+          am5.color("#FF4480"),
+          am5.color("#FFD700"),
           am5.color("#9482FE")
       ]
   }));

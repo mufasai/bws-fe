@@ -1,7 +1,6 @@
 import { createSignal, For, onMount, Show } from "solid-js";
 import type { WorkOrder } from "../types/workOrder";
 // import { ScheduleList } from '../components/schedule/ScheduleList';
-import WorkOrderTable from "../components/ProjectPartial/ProjectTable";
 import { CgExport } from "solid-icons/cg";
 import { VsSearch } from "solid-icons/vs";
 import { GridApi } from "ag-grid-community";
@@ -347,8 +346,8 @@ export default function ProjectPage() {
         description: "increase from last month",
         change: "12%",
         trend: "down",
-        color: "#FF934F",
-        bgColor: "#FF934F29",
+        color: "#FF4480",
+        bgColor: "#FF448029",
         icon: (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -413,8 +412,8 @@ export default function ProjectPage() {
         description: "increase from last month",
         change: "12%",
         trend: "down",
-        color: "#D0C900",
-        bgColor: "#D0C90029",
+        color: "#FFD700",
+        bgColor: "#FFD70029",
         icon: (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -606,7 +605,7 @@ export default function ProjectPage() {
                     <h1 class="text-md font-semibold font-inter text-gray-900">
                       All Users
                     </h1>
-                    <span class="text-[1.5vh] font-inter text-[#0070FF] bg-[#EBF5FF] px-2 py-1 rounded-full font-inter">
+                    <span class="text-[1.5vh] font-inter text-[#FF934F] bg-[#FF934F29] px-2 py-1 rounded-full font-inter">
                       Label Text
                     </span>
                   </div>
@@ -641,7 +640,7 @@ export default function ProjectPage() {
 
                 <button
                   onClick={openModal}
-                  class='inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700'
+                  class='inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#FF934F] rounded-lg hover:bg-blue-700'
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />

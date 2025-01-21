@@ -248,7 +248,7 @@ const Application = (props: ApplicationProps) => {
         </div>
         <button
           onClick={openPopup}
-          class="px-4 py-2 bg-[#0075FE] text-white rounded-lg flex items-center gap-2"
+          class="px-4 py-2 bg-[#FF934F] text-white rounded-lg flex items-center gap-2"
         >
           + Add New
         </button>
@@ -304,7 +304,7 @@ const Application = (props: ApplicationProps) => {
               </button>
               <button
                 onClick={addApplication}
-                class="px-4 py-2 bg-[#0075FE] text-white rounded-lg"
+                class="px-4 py-2 bg-[#FF934F] text-white rounded-lg"
               >
                 Save
               </button>
@@ -381,7 +381,7 @@ const Application = (props: ApplicationProps) => {
                   class="w-full px-3 py-2 mb-2 border border-gray-300 rounded"
                 />
                 <button
-                  class="px-4 py-2 bg-[#0075FE] text-white rounded-lg mr-2"
+                  class="px-4 py-2 bg-[#FF934F] text-white rounded-lg mr-2"
                   onClick={saveEdit}
                 >
                   Save

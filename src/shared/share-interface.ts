@@ -1,3 +1,17 @@
+export interface AuditData {
+    id: number;
+    username: string;
+    actvity: string;
+    timestamp: string;
+    details: string;
+}
+export interface ParameterData {
+    id: number;
+    name: string;
+    value: string;
+    lastupdate: string;
+}
+
 export interface UserData {
     id: number;
     username: string;

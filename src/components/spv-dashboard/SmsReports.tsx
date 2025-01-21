@@ -26,7 +26,7 @@ const StatItem = (props: any) => (
 
 // DownloadButton.jsx
 const DownloadButton = () => (
-  <button class="w-full mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center justify-center">
+  <button class="w-full mt-4 bg-[#FF934F] text-white px-4 py-2 rounded-lg hover:bg-[#E76B1E] flex items-center justify-center">
     <span class="mr-2">
       <svg
         xmlns="http://www.w3.org/2000/svg"

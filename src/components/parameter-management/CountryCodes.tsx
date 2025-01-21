@@ -248,7 +248,7 @@ const CountryCodes = (props: CountryProps) => {
         </div>
         <button
           onClick={openPopup}
-          class="px-4 py-2 bg-[#0075FE] text-white rounded-lg flex items-center gap-2"
+          class="px-4 py-2 bg-[#FF934F] text-white rounded-lg flex items-center gap-2"
         >
           + Add New
         </button>
@@ -314,7 +314,7 @@ const CountryCodes = (props: CountryProps) => {
               </button>
               <button
                 onClick={addApplication}
-                class="px-4 py-2 bg-[#0075FE] text-white rounded-lg"
+                class="px-4 py-2 bg-[#FF934F] text-white rounded-lg"
               >
                 Save
               </button>
@@ -335,7 +335,7 @@ const CountryCodes = (props: CountryProps) => {
                 <>
                   <div class="flex justify-between items-center mb-3">
                     <div class="flex flex-row space-x-4">
-                      <div class="bg-[#EDF5FF] m-2 p-2 rounded-lg text-[#2F69F3] items-center">
+                      <div class="bg-[#FF934F29] m-2 p-2 rounded-lg text-[#FF934F] items-center">
                         {item.code_number}
                       </div>
 
@@ -409,7 +409,7 @@ const CountryCodes = (props: CountryProps) => {
                 />
 
                 <button
-                  class="px-4 py-2 bg-[#0075FE] text-white rounded-lg mr-2"
+                  class="px-4 py-2 bg-[#FF934F] text-white rounded-lg mr-2"
                   onClick={saveEdit}
                 >
                   Save
