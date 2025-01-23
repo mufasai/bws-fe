@@ -65,13 +65,39 @@ const Layout: Component<{ children: JSX.Element }> = (props) => {
       {/* Main content */}
       <div
         class={`flex-1 flex flex-col transition-all duration-300 ${
-          isSidebarOpen() ? "lg:ml-64" : "lg:ml-0"
+          isSidebarOpen() ? "lg:ml-64" : "lg:ml-20"
         }`}
       >
-        <Navbar
-          onToggleSidebar={toggleSidebar}
-          isSidebarOpen={isSidebarOpen()}
-        />
+        <div class="sticky top-0 z-20">
+          <button
+            onClick={toggleSidebar}
+            class="hidden lg:flex fixed left-5 top-5 p-2 rounded-lg bg-white dark:bg-gray-800 shadow-md hover:bg-gray-100 dark:hover:bg-gray-700"
+            aria-label="Toggle sidebar"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-gray-600 dark:text-gray-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d={
+                  isSidebarOpen()
+                    ? "M11 19l-7-7 7-7m8 14l-7-7 7-7"
+                    : "M13 5l7 7-7 7M5 5l7 7-7 7"
+                }
+              />
+            </svg>
+          </button>
+          <Navbar
+            onToggleSidebar={toggleSidebar}
+            isSidebarOpen={isSidebarOpen()}
+          />
+        </div>
         <main class="flex-1 p-4 overflow-auto">{props.children}</main>
       </div>
     </div>
