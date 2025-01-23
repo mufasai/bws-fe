@@ -45,7 +45,7 @@ const Layout: Component<{ children: JSX.Element }> = (props) => {
   };
 
   return (
-    <div class="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div class="flex min-h-screen bg-[f2f2f2] dark:bg-gray-900">
       {/* Mobile overlay */}
       <div
         class={`fixed inset-0 bg-gray-600 bg-opacity-50 transition-opacity duration-300 z-20 lg:hidden ${
