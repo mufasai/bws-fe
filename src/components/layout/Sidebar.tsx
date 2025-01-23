@@ -1,7 +1,5 @@
-import { Component, createSignal, onMount, Show } from "solid-js";
-import { A, useLocation, useNavigate } from "@solidjs/router";
-import { Tooltip } from "flowbite";
-import ConfirmLogout from "../confirm-logout/confirm-logut";
+import { type Component, createSignal, onMount } from "solid-js";
+import { A, useLocation } from "@solidjs/router";
 
 const Sidebar: Component<{
   isOpen: boolean;
@@ -10,45 +8,6 @@ const Sidebar: Component<{
   onCloseMobile: () => void;
 }> = (props) => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const [showLogoutDialog, setShowLogoutDialog] = createSignal(false);
-  const [isSidebarOpen, setIsSidebarOpen] = createSignal(true);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = createSignal(false);
-
-  const handleLogout = async () => {
-    setShowLogoutDialog(true);
-  };
-
-  onMount(() => {
-    initializeTooltips();
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  });
-
-  const handleResize = () => {
-    if (window.innerWidth < 1024) {
-      setIsSidebarOpen(false);
-    } else {
-      setIsSidebarOpen(props.isOpen);
-    }
-  };
-
-  function initializeTooltips() {
-    const tooltipTriggerList = document.querySelectorAll(
-      "[data-tooltip-target]"
-    );
-    tooltipTriggerList.forEach((triggerEl) => {
-      const targetEl = document.getElementById(
-        triggerEl.getAttribute("data-tooltip-target")!
-      );
-      if (targetEl) {
-        new Tooltip(targetEl as HTMLElement, triggerEl as HTMLElement, {
-          placement: "right",
-        });
-      }
-    });
-  }
 
   const menuItems = [
     {
@@ -173,23 +132,19 @@ const Sidebar: Component<{
   ];
 
   return (
-    <div
-      class={`fixed inset-y-0 left-0 z-30 w-64 bg-white dark:bg-gray-800 transform transition-transform duration-300 ease-in-out lg:relative lg:transform-none ${
-        props.isMobileOpen
+    <aside
+      class={`fixed inset-y-0 left-0 z-30 w-64 bg-white dark:bg-gray-800 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        props.isMobileOpen || props.isOpen
           ? "translate-x-0"
-          : "-translate-x-full lg:translate-x-0"
-      }`}
+          : "-translate-x-full"
+      } ${props.isOpen ? "lg:w-64" : "lg:w-20"}`}
     >
       {/* Logo Section */}
       <div class="h-16 flex items-center justify-between px-4 border-b dark:border-gray-700">
-        <div class="flex items-center text-center mx-auto">
-          <p
-            class={`text-xl font-semibold transition-opacity duration-200  ${
-              props.isOpen ? "opacity-100" : "opacity-0 lg:opacity-100"
-            }`}
-          >
-            Generator OTP
-          </p>
+        <div class="flex items-center">
+          <span class="text-xl font-semibold transition-opacity duration-200">
+            {props.isOpen ? "Generator OTP" : "OTP"}
+          </span>
         </div>
         <button
           onClick={props.onCloseMobile}
@@ -212,20 +167,20 @@ const Sidebar: Component<{
       </div>
 
       {/* Menu Items */}
-      <nav class="px-4 py-4 space-y-2">
-        {menuItems.map((item) => (
+      <nav class="px-2 py-4">
+        {menuItems.map((item, index) => (
           <A
             href={item.path}
-            class={`flex items-center px-3 py-2 rounded-lg transition-colors ${
+            class={`flex items-center px-3 py-2 rounded-lg transition-colors mb-1 ${
               location.pathname === item.path
                 ? "bg-[#FF934F] text-white"
                 : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
             }`}
           >
-            <div class="w-6 h-6">{item.icon}</div>
+            <div class="w-6 h-6 flex-shrink-0">{item.icon}</div>
             <span
-              class={`ml-3 transition-opacity duration-200 ${
-                props.isOpen ? "opacity-100" : "opacity-0 lg:opacity-100"
+              class={`ml-3 whitespace-nowrap transition-opacity duration-200 ${
+                props.isOpen ? "opacity-100" : "opacity-0 lg:hidden"
               }`}
             >
               {item.title}
@@ -233,7 +188,7 @@ const Sidebar: Component<{
           </A>
         ))}
       </nav>
-    </div>
+    </aside>
   );
 };
 

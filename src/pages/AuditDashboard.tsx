@@ -1,10 +1,15 @@
-import { createSignal, createEffect } from 'solid-js';
-import { FiDownload, FiActivity, FiSettings, FiSearch, FiCalendar } from 'solid-icons/fi';
-import AuditTrailTable from '../components/Audit/AuditTrailTable';
-import ParameterTable from '../components/Audit/ParameterTable';
+import { createSignal, createEffect } from "solid-js";
+import {
+  FiDownload,
+  FiActivity,
+  FiSettings,
+  FiSearch,
+  FiCalendar,
+} from "solid-icons/fi";
+import AuditTrailTable from "../components/Audit/AuditTrailTable";
+import ParameterTable from "../components/Audit/ParameterTable";
 
 const AuditDashboard = () => {
-
   const FilterIcon = () => (
     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path
@@ -30,17 +35,17 @@ const AuditDashboard = () => {
   const [auditLogs, setAuditLogs] = createSignal([
     {
       id: 1,
-      username: 'john_doe',
-      activity: 'Login',
-      timestamp: '2025-01-16 09:30:00',
-      details: 'User login successful'
+      username: "john_doe",
+      activity: "Login",
+      timestamp: "2025-01-16 09:30:00",
+      details: "User login successful",
     },
     {
       id: 2,
-      username: 'jane_smith',
-      activity: 'SMS Management',
-      timestamp: '2025-01-16 10:15:00',
-      details: 'Updated SMS template'
+      username: "jane_smith",
+      activity: "SMS Management",
+      timestamp: "2025-01-16 10:15:00",
+      details: "Updated SMS template",
     },
     // Add more sample data as needed
   ]);
@@ -48,21 +53,21 @@ const AuditDashboard = () => {
   const [parameters, setParameters] = createSignal([
     {
       id: 1,
-      name: 'SMS Template',
-      value: 'Default template',
-      lastUpdated: '2025-01-15'
+      name: "SMS Template",
+      value: "Default template",
+      lastUpdated: "2025-01-15",
     },
     {
       id: 2,
-      name: 'Telco Prefix',
-      value: '+62',
-      lastUpdated: '2025-01-14'
-    }
+      name: "Telco Prefix",
+      value: "+62",
+      lastUpdated: "2025-01-14",
+    },
   ]);
 
-  const [activeTab, setActiveTab] = createSignal('audit');
-  const [searchQuery, setSearchQuery] = createSignal('');
-  const [dateFilter, setDateFilter] = createSignal('');
+  const [activeTab, setActiveTab] = createSignal("audit");
+  const [searchQuery, setSearchQuery] = createSignal("");
+  const [dateFilter, setDateFilter] = createSignal("");
 
   const handleDownload = (format: string) => {
     // Implement download logic here
@@ -70,7 +75,7 @@ const AuditDashboard = () => {
   };
 
   return (
-    <div class="min-h-screen bg-gray-100 p-6">
+    <div class="min-h-screen p-6">
       <div class="max-w-screen mx-auto mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Audit Trail */}
         <div class="bg-white rounded-2xl shadow-sm p-6">
@@ -82,7 +87,8 @@ const AuditDashboard = () => {
                   Audit Trail
                 </h2>
                 <p class="mt-1 text-gray-600">
-                  Monitor user activities like login, data management, SMS submission, and SPV authorization.
+                  Monitor user activities like login, data management, SMS
+                  submission, and SPV authorization.
                 </p>
               </div>
             </div>
@@ -128,11 +134,10 @@ const AuditDashboard = () => {
           <div class="mb-6">
             <div class="flex justify-between items-center ">
               <div>
-                <h2 class="text-2xl font-semibold text-gray-800">
-                  Parameter
-                </h2>
+                <h2 class="text-2xl font-semibold text-gray-800">Parameter</h2>
                 <p class="mt-1 text-gray-600">
-                  Monitor user activities like login, data management, SMS submission, and SPV authorization.
+                  Monitor user activities like login, data management, SMS
+                  submission, and SPV authorization.
                 </p>
               </div>
             </div>

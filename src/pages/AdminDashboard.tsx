@@ -48,7 +48,7 @@ export default function adminDashboard() {
   });
 
   return (
-    <div class="lg:mt-0 mt-12 flex flex-col space-y-6 p-6 bg-gray-100 min-h-screen lg:max-w-screen">
+    <div class="lg:mt-0 mt-12 flex flex-col space-y-6 p-6  min-h-screen lg:max-w-screen">
       <div class="lg:flex lg:flex-row lg:space-x-4 grid grid-cols-2 lg:gap-0">
         {loading()
           ? stats.map(() => (
