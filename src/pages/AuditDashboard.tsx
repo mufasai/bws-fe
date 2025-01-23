@@ -76,7 +76,7 @@ const AuditDashboard = () => {
 
   return (
     <div class="min-h-screen p-6">
-      <div class="max-w-screen mx-auto mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="max-w-screen mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Audit Trail */}
         <div class="bg-white rounded-2xl shadow-sm p-6">
           {/* Title */}

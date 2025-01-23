@@ -178,11 +178,11 @@ const Sidebar: Component<{
       </div>
 
       {/* Menu Items */}
-      <nav class="px-2 py-4">
+      <nav class="px-2 py-8">
         {menuItems.map((item, index) => (
           <A
             href={item.path}
-            class={`flex items-center px-3 py-2 rounded-lg transition-colors mb-1 group relative ${
+            class={`flex items-center px-3 py-4 rounded-lg transition-colors mb-1 group relative ${
               location.pathname === item.path
                 ? "bg-[#FF934F] text-white"
                 : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
@@ -200,7 +200,7 @@ const Sidebar: Component<{
             </span>
             {/* Tooltip for collapsed state */}
             {!props.isOpen && (
-              <div class="absolute left-14 bg-gray-900 text-white px-2 py-1 rounded-md text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              <div class="absolute left-14 bg-gray-900 text-white px-2 py-4 rounded-md text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                 {item.title}
               </div>
             )}
