@@ -133,29 +133,26 @@ const Sidebar: Component<{
 
   return (
     <aside
-      class={`fixed inset-y-0 left-0 z-30 bg-white dark:bg-gray-800 transform transition-all duration-300 ease-in-out lg:translate-x-0 ${
-        props.isMobileOpen || props.isOpen
+      class={`fixed inset-y-0 left-0 z-30 bg-white dark:bg-gray-800 transform transition-all duration-300 ease-in-out lg:translate-x-0 ${props.isMobileOpen || props.isOpen
           ? "translate-x-0"
           : "-translate-x-full"
-      } ${props.isOpen ? "lg:w-64" : "lg:w-20"}`}
+        } ${props.isOpen ? "lg:w-64" : "lg:w-20"}`}
     >
       {/* Logo Section */}
       <div class="h-16 flex items-center justify-between px-4 border-b dark:border-gray-700 overflow-hidden">
         <div class="flex items-center min-w-[200px]">
-          <span
-            class={`text-xl font-semibold transition-all duration-300 ${
-              props.isOpen ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            Generator OTP
-          </span>
-          <span
-            class={`text-xl font-semibold absolute transition-all duration-300 ${
-              props.isOpen ? "opacity-0" : "opacity-100"
-            }`}
-          >
-            OTP
-          </span>
+          <img
+            src="public/LOGO GOTP.png"
+            alt="Logo"
+            class={`h-10 w-auto transition-all duration-300 mx-auto ${props.isOpen ? "opacity-100" : "opacity-0"
+              }`}
+          />
+          <img
+            src="public/LOGO GOTP.png"
+            alt="Logo Small"
+            class={`h-10 w-auto absolute transition-all duration-300 ${props.isOpen ? "opacity-0" : "opacity-100"
+              }`}
+          />
         </div>
         <button
           onClick={props.onCloseMobile}
@@ -182,19 +179,17 @@ const Sidebar: Component<{
         {menuItems.map((item, index) => (
           <A
             href={item.path}
-            class={`flex items-center px-3 py-4 rounded-lg transition-colors mb-1 group relative ${
-              location.pathname === item.path
+            class={`flex items-center px-3 py-4 rounded-lg transition-colors mb-1 group relative ${location.pathname === item.path
                 ? "bg-[#FF934F] text-white"
                 : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-            }`}
+              }`}
           >
             <div class="w-6 h-6 flex-shrink-0">{item.icon}</div>
             <span
-              class={`ml-3 whitespace-nowrap transition-all duration-200 ${
-                props.isOpen
+              class={`ml-3 whitespace-nowrap transition-all duration-200 ${props.isOpen
                   ? "opacity-100 relative"
                   : "opacity-0 absolute left-14"
-              } group-hover:opacity-100`}
+                } group-hover:opacity-100`}
             >
               {item.title}
             </span>
