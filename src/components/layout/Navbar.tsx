@@ -3,7 +3,7 @@ import { onCleanup } from "solid-js";
 
 const Navbar: Component<{
   onToggleSidebar: () => void;
-  isSidebarOpen?: boolean;
+  isSidebarOpen: boolean;
 }> = (props) => {
   const [showNotifications, setShowNotifications] = createSignal(false);
   const [showUserMenu, setShowUserMenu] = createSignal(false);
@@ -28,7 +28,7 @@ const Navbar: Component<{
           <div class="flex items-center space-x-4">
             <button
               onClick={props.onToggleSidebar}
-              class="lg:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+              class=" p-2 rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

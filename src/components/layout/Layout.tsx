@@ -1,68 +1,62 @@
-import { Component, JSX, createSignal } from "solid-js";
+import { Component, createSignal, onMount, onCleanup, JSX } from "solid-js";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 
 const Layout: Component<{ children: JSX.Element }> = (props) => {
   const [isSidebarOpen, setIsSidebarOpen] = createSignal(true);
-  const [isMobileOpen, setIsMobileOpen] = createSignal(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = createSignal(false);
+  const [isDesktop, setIsDesktop] = createSignal(window.innerWidth >= 1024);
+
+  const handleResize = () => {
+    const desktop = window.innerWidth >= 1024;
+    setIsDesktop(desktop);
+    if (!desktop) {
+      setIsSidebarOpen(false); // Tutup sidebar di perangkat kecil.
+    }
+  };
+
+  onMount(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+  });
+
+  onCleanup(() => {
+    window.removeEventListener("resize", handleResize);
+  });
 
   const toggleSidebar = () => {
-    if (window.innerWidth >= 768) {
+    if (isDesktop()) {
       setIsSidebarOpen(!isSidebarOpen());
     } else {
-      setIsMobileOpen(!isMobileOpen());
+      setIsMobileMenuOpen(!isMobileMenuOpen());
     }
   };
 
   return (
-    <div class="flex min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div
-        class={`fixed inset-0 bg-gray-800/60 transition-opacity md:hidden ${
-          isMobileOpen() ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
-        onClick={() => setIsMobileOpen(false)}
+    <div class="flex min-h-screen bg-gray-50 dark:bg-gray-900 ">
+      {/* Overlay untuk mobile */}
+      {isMobileMenuOpen() && (
+        <div
+          class="fixed inset-0 bg-gray-600 bg-opacity-50 z-20 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <Sidebar
+        isOpen={isSidebarOpen()}
+        isMobileOpen={isMobileMenuOpen()}
+        onToggleSidebar={toggleSidebar}
+        onCloseMobile={() => setIsMobileMenuOpen(true)}
       />
 
-      <div
-        class={`fixed md:fixed left-0 h-screen z-20 transform transition-transform duration-300 ${
-          isMobileOpen() ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0`}
-      >
-        <Sidebar isOpen={isSidebarOpen()} onToggleSidebar={toggleSidebar} />
-      </div>
-
-      <div
-        class="flex-1 flex flex-col md:ml-[250px]"
-        style={{
-          "margin-left":
-            window.innerWidth >= 768
-              ? isSidebarOpen()
-                ? "15vw"
-                : "70px"
-              : "0",
-          transition: "margin-left 300ms",
-        }}
-      >
-        <div
-          class="fixed top-0 right-0 z-10 w-full md:w-auto"
-          style={{
-            left:
-              window.innerWidth >= 768
-                ? isSidebarOpen()
-                  ? "15vw"
-                  : "70px"
-                : "0",
-            transition: "left 300ms",
-          }}
-        >
-          <Navbar
-            onToggleSidebar={toggleSidebar}
-            isSidebarOpen={isSidebarOpen()}
-          />
-        </div>
-        <main class="flex-1 p-4 overflow-auto mt-[53px] bg-[#f3f4f8]">
-          {props.children}
-        </main>
+      {/* Konten utama */}
+      <div class="flex-1 flex flex-col">
+        <Navbar
+          onToggleSidebar={toggleSidebar}
+          isSidebarOpen={isSidebarOpen()}
+        />
+        <main class="flex-1 w-64 overflow-auto">{props.children}</main>
       </div>
     </div>
   );

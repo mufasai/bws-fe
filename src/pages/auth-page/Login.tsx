@@ -8,7 +8,6 @@ import {
   ResetPasswordAPI,
 } from "../../services/service";
 import "sweetalert2/dist/sweetalert2.min.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Login: Component = () => {
   const navigate = useNavigate();

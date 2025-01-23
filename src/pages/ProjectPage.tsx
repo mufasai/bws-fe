@@ -481,7 +481,7 @@ export default function ProjectPage() {
 
   return (
     <>
-      <div class="min-h-screen space-y-0 space-x-6 flex flex-col">
+      <div class="min-h-screen space-y-0 bg-gray-100 space-x-6 flex flex-col">
         <div class="space-x-6 flex flex-row mt-12 m-6">
           <div class="w-3/5 grid grid-cols-2 gap-6">
             {summaryInfor.map((item, index) => (
