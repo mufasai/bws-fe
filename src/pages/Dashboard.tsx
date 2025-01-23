@@ -1,8 +1,9 @@
 import { Component, createSignal } from "solid-js";
 import { DashboardStats } from "../components/dashboard/DashboardStats";
-import FileUpload from "../components/dashboard/FileUpload";
 import InputSmsDirect from "../components/dashboard/InputSmsDirect";
 import ShowFile from "../components/dashboard/ShowFIle";
+import Card from "../components/dashboard/Card";
+import {FileMap} from "../components/dashboard/FileMap";
 
 const Dashboard: Component = () => {
   const [isLoading, setIsLoading] = createSignal(true);
@@ -17,8 +18,8 @@ const Dashboard: Component = () => {
       ) : (
         <div class="space-y-4">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <InputSmsDirect />
-            <FileUpload />
+            <FileMap/>
+            <Card />
           </div>
           <div class="bg-white rounded-lg shadow-md p-6">
             <ShowFile />

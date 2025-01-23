@@ -56,8 +56,8 @@ const InputSmsDirect = () => {
   };
 
   return (
-    <div class="flex flex-col border-2 bg-white rounded-lg p-6 w-full shadow-sm">
-      <h2 class="text-xl font-normal mb-6">Input SMS Direct</h2>
+    <div class="flex flex-col border-2 bg-white rounded-lg p-9 w-full shadow-sm">
+      <h2 class="text-xl font-normal mb-9">Input SMS Direct</h2>
 
       {status() && <div class="mb-4 text-green-500">{status()}</div>}
       {error() && <div class="mb-4 text-red-500">{error()}</div>}

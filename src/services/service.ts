@@ -15,6 +15,29 @@ interface VerificationResponse {
 }
 
 
+export async function uploadFile(file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+      const response = await fetch(`${BASE_URL}/api/upload`, {  // Sesuaikan dengan URL endpoint backend Anda
+          method: "POST",
+          body: formData,
+      });
+
+      if (!response.ok) {
+          throw new Error("Failed to upload file");
+      }
+
+      const result = await response.json();
+      return result;  // Mengembalikan response JSON, yang berisi data file setelah di-upload
+  } catch (error) {
+      console.error("Error uploading file:", error);
+      throw error;  // Lemparkan error agar dapat ditangani di tempat lain
+  }
+}
+
+
 
 // Register API
 export const RegisterAPI = async (userData: {
@@ -95,11 +118,38 @@ export const handleVerification = async (token: string) => {
   }
 };
 
+// api/service.ts
+
+// api/service.ts
+
+export const fetchSmsInbox = async (): Promise<any> => {
+  try {
+    const response = await fetch(`${BASE_URL}/inbox/{user_id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('API Response:', data);
+    return data.data;
+  } catch (error) {
+    console.error("Fetch error:", error);
+    throw error;
+  }
+};
+
+
 // Login API
 // Login API
 export const LoginAPI = async (username: string, password: string) => {
   try {
-    const response = await fetch(`http://localhost:8080/api/auth/login`, {
+    const response = await fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
