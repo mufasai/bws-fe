@@ -178,7 +178,7 @@ const Sidebar: Component<{
       </div>
 
       {/* Menu Items */}
-      <nav class="px-2 py-8">
+      <nav class="px-2 py-6">
         {menuItems.map((item, index) => (
           <A
             href={item.path}
