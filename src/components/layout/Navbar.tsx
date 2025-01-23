@@ -24,7 +24,7 @@ const Navbar: Component<{
   });
 
   return (
-    <nav class="sticky top-0 z-20 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
+    <nav class="top-0 z-20 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
       <div class="max-w-full mx-auto px-4">
         <div class="flex items-center justify-between h-16">
           {/* Left section */}
