@@ -129,7 +129,7 @@ const SpvDashboard = () => {
   ];
 
   return (
-    <div class="min-h-screen mt-6 bg-gray-100">
+    <div class="min-h-screen mt-6 ">
       <div class="max-w-screen mx-auto">
         <div class="space-y-6">
           {/* Reports Section */}

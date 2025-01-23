@@ -1,5 +1,4 @@
-import { Component, createSignal, onMount, Show } from "solid-js";
-import { onCleanup } from "solid-js";
+import { type Component, createSignal, onMount, Show } from "solid-js";
 
 const Navbar: Component<{
   onToggleSidebar: () => void;
@@ -10,55 +9,64 @@ const Navbar: Component<{
   const [isDarkMode, setIsDarkMode] = createSignal(false);
 
   onMount(() => {
-    const handleClickOutside = (event: any) => {
-      if (!event.target.closest(".relative")) {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest(".user-menu")) {
         setShowUserMenu(false);
+      }
+      if (!target.closest(".notifications")) {
+        setShowNotifications(false);
       }
     };
 
     document.addEventListener("click", handleClickOutside);
-    onCleanup(() => document.removeEventListener("click", handleClickOutside));
+    return () => document.removeEventListener("click", handleClickOutside);
   });
 
   return (
-    <nav class="w-full bg-white dark:bg-gray-900 shadow-lg">
-      <div class="max-w-7xl mx-auto">
-        <div class="flex items-center justify-between h-16 px-4">
+    <nav class="sticky top-0 z-20 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
+      <div class="max-w-full mx-auto px-4">
+        <div class="flex items-center justify-between h-16">
           {/* Left section */}
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center gap-4">
             <button
               onClick={props.onToggleSidebar}
-              class=" p-2 rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+              class="p-2 rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 lg:hidden"
+              aria-label="Toggle sidebar"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
+                class="h-6 w-6"
                 fill="none"
+                viewBox="0 0 24 24"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
               >
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="18" x2="21" y2="18" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             </button>
             <div class="flex items-center space-x-3">
               <div class="h-8 w-8 bg-[#FF934F] rounded-lg flex items-center justify-center">
                 <span class="text-white font-bold">D</span>
               </div>
-              <span class="text-xl font-semibold text-gray-800 dark:text-white">
+              <span class="text-xl font-semibold text-gray-800 dark:text-white hidden sm:block">
                 Dashboard
               </span>
             </div>
           </div>
 
           {/* Center section - Search */}
-          <div class="hidden md:flex flex-1 justify-center px-6">
-            <div class="relative w-full max-w-lg">
+          <div class="hidden md:flex flex-1 max-w-lg mx-4">
+            <div class="relative w-full">
+              <input
+                type="text"
+                class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg pl-10 pr-4 py-2 text-sm"
+                placeholder="Search..."
+              />
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg
                   class="h-5 w-5 text-gray-400"
@@ -74,19 +82,14 @@ const Navbar: Component<{
                   />
                 </svg>
               </div>
-              <input
-                type="text"
-                class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl pl-10 pr-4 py-2 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Search anything..."
-              />
             </div>
           </div>
 
           {/* Right section */}
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center gap-2">
             <button
               onClick={() => setIsDarkMode(!isDarkMode())}
-              class="p-2 rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+              class="p-2 rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
             >
               {isDarkMode() ? (
                 <svg
@@ -119,10 +122,10 @@ const Navbar: Component<{
               )}
             </button>
 
-            <div class="relative">
+            <div class="relative notifications">
               <button
                 onClick={() => setShowNotifications(!showNotifications())}
-                class="p-2 rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 relative"
+                class="p-2 rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 relative"
               >
                 <svg
                   class="h-5 w-5"
@@ -168,10 +171,10 @@ const Navbar: Component<{
               </Show>
             </div>
 
-            <div class="relative">
+            <div class="relative user-menu">
               <button
                 onClick={() => setShowUserMenu(!showUserMenu())}
-                class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <img
                   src="foto_profile.jpeg"
@@ -265,9 +268,14 @@ const Navbar: Component<{
           </div>
         </div>
 
-        {/* Mobile search bar */}
-        <div class="md:hidden border-t border-gray-200 dark:border-gray-700 px-4 py-3">
+        {/* Mobile search */}
+        <div class="md:hidden py-2">
           <div class="relative">
+            <input
+              type="text"
+              class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg pl-10 pr-4 py-2 text-sm"
+              placeholder="Search..."
+            />
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <svg
                 class="h-5 w-5 text-gray-400"
@@ -283,11 +291,6 @@ const Navbar: Component<{
                 />
               </svg>
             </div>
-            <input
-              type="text"
-              class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl pl-10 pr-4 py-2 text-sm text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Search anything..."
-            />
           </div>
         </div>
       </div>

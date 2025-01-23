@@ -1,4 +1,10 @@
-import { Component, createSignal, onMount, onCleanup, JSX } from "solid-js";
+import {
+  type Component,
+  createSignal,
+  onMount,
+  onCleanup,
+  type JSX,
+} from "solid-js";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 
@@ -10,8 +16,10 @@ const Layout: Component<{ children: JSX.Element }> = (props) => {
   const handleResize = () => {
     const desktop = window.innerWidth >= 1024;
     setIsDesktop(desktop);
-    if (!desktop) {
-      setIsSidebarOpen(false); // Tutup sidebar di perangkat kecil.
+    if (!desktop && isSidebarOpen()) {
+      setIsSidebarOpen(false);
+    } else if (desktop && !isSidebarOpen()) {
+      setIsSidebarOpen(true);
     }
   };
 
@@ -32,31 +40,39 @@ const Layout: Component<{ children: JSX.Element }> = (props) => {
     }
   };
 
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <div class="flex min-h-screen bg-gray-50 dark:bg-gray-900 ">
-      {/* Overlay untuk mobile */}
-      {isMobileMenuOpen() && (
-        <div
-          class="fixed inset-0 bg-gray-600 bg-opacity-50 z-20 lg:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
+    <div class="flex min-h-screen bg-[#f2f2f2] dark:bg-gray-900">
+      {/* Mobile overlay */}
+      <div
+        class={`fixed inset-0 bg-gray-600 bg-opacity-50 transition-opacity duration-300 z-20 lg:hidden ${
+          isMobileMenuOpen() ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={closeMobileMenu}
+      />
 
       {/* Sidebar */}
       <Sidebar
         isOpen={isSidebarOpen()}
         isMobileOpen={isMobileMenuOpen()}
         onToggleSidebar={toggleSidebar}
-        onCloseMobile={() => setIsMobileMenuOpen(true)}
+        onCloseMobile={closeMobileMenu}
       />
 
-      {/* Konten utama */}
-      <div class="flex-1 flex flex-col">
+      {/* Main content */}
+      <div
+        class={`flex-1 flex flex-col transition-all duration-300 ${
+          isSidebarOpen() ? "lg:ml-64" : "lg:ml-0"
+        }`}
+      >
         <Navbar
           onToggleSidebar={toggleSidebar}
           isSidebarOpen={isSidebarOpen()}
         />
-        <main class="flex-1 w-64 overflow-auto">{props.children}</main>
+        <main class="flex-1 p-4 overflow-auto">{props.children}</main>
       </div>
     </div>
   );
