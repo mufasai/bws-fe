@@ -24,15 +24,15 @@ const Navbar: Component<{
   });
 
   return (
-    <nav class="top-0 z-20 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
+    <nav class="sticky top-0 z-20 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
       <div class="max-w-full mx-auto px-4">
         <div class="flex items-center justify-between h-16">
           {/* Left section */}
           <div class="flex items-center gap-4">
             <button
-              onClick={props.onToggleSidebar}
-              class=" p-2 rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-              aria-label="Toggle sidebar"
+              onClick={() => props.onToggleSidebar()}
+              class="p-2 rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+              aria-label="Toggle mobile menu"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
