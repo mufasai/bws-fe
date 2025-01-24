@@ -31,7 +31,7 @@ const Navbar: Component<{
           <div class="flex items-center gap-4">
             <button
               onClick={props.onToggleSidebar}
-              class="lg:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+              class=" p-2 rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
               aria-label="Toggle sidebar"
             >
               <svg
