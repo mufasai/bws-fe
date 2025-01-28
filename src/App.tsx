@@ -67,7 +67,7 @@ const App: Component = () => {
           )}
         />
 
-        <Route path="*" component={() => <Navigate href="/dashboard" />} />
+        <Route path="*" component={() => <Navigate href="/adminDashboard" />} />
       </Router>
     </div>
   );
