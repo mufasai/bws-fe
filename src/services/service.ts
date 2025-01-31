@@ -15,27 +15,81 @@ interface VerificationResponse {
 }
 
 
-export async function uploadFile(file: File) {
-  const formData = new FormData();
-  formData.append("file", file);
-
+export const sendSms = async (smsData: { number: string; message: string }) => {
   try {
-      const response = await fetch(`${BASE_URL}/api/upload`, {  // Sesuaikan dengan URL endpoint backend Anda
-          method: "POST",
-          body: formData,
-      });
+    // Menambahkan status dan created_at secara otomatis
+    const dataWithStatus = {
+      ...smsData,
+      status: 'pending',
+      created_at: new Date().toISOString(), // Menggunakan timestamp saat ini
+    };
 
-      if (!response.ok) {
-          throw new Error("Failed to upload file");
-      }
+    console.log('Sending SMS data:', dataWithStatus); // Menambahkan log untuk melihat data yang dikirim
 
-      const result = await response.json();
-      return result;  // Mengembalikan response JSON, yang berisi data file setelah di-upload
+    const response = await fetch(`${BASE_URL}/sms/input`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataWithStatus),
+    });
+
+    console.log('API Response Status:', response.status); // Menampilkan status code API
+
+    // Menangani response yang tidak berhasil
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('API Response Error:', errorData); // Menampilkan error dari API
+      throw new Error(errorData.message || 'Failed to send SMS');
+    }
+
+    // Mengembalikan response JSON jika sukses
+    const responseData = await response.json();
+    console.log('API Response Data:', responseData); // Menampilkan data response
+    return responseData;
   } catch (error) {
-      console.error("Error uploading file:", error);
-      throw error;  // Lemparkan error agar dapat ditangani di tempat lain
+    console.error('Error during sending SMS:', error); // Menampilkan error ke console
+    // Menangani kesalahan yang lebih rinci
+    if (error instanceof Error) {
+      throw new Error(error.message || 'Failed to send SMS');
+    } else {
+      throw new Error('An unknown error occurred during SMS sending');
+    }
   }
-}
+};
+
+
+
+export const uploadJsonFile = async (data: object[]) => {
+  try {
+    console.log("Mengirim data ke backend:", data);
+
+    const response = await fetch(`${BASE_URL}/sms/upload`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    console.log("Response HTTP status:", response.status);
+
+    if (!response.ok) {
+      throw new Error(`Upload failed: ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    console.log("Response dari backend:", result);
+    return result;
+  } catch (error) {
+    console.error("Upload error:", error);
+    throw error;
+  }
+};
+
+
+
+
 
 
 
@@ -123,8 +177,10 @@ export const handleVerification = async (token: string) => {
 // api/service.ts
 
 export const fetchSmsInbox = async (): Promise<any> => {
+  let users : any  = localStorage.getItem('user')
+  console.log("data user login -> ",users)
   try {
-    const response = await fetch(`${BASE_URL}/inbox/{user_id}`, {
+    const response = await fetch(`${BASE_URL}/inbox/users:`+ JSON.parse(users).id.id.String, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -158,6 +214,7 @@ export const LoginAPI = async (username: string, password: string) => {
     });
 
     const data = await response.json();
+    localStorage.setItem("user",JSON.stringify(data))
 
     if (response.ok) {
       localStorage.setItem('authToken', data.token);

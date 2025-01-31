@@ -1,11 +1,13 @@
 import { createSignal, createMemo, createEffect, Show } from "solid-js";
 import AgGridSolid from "ag-grid-solid";
 import InputSmsDirect from "./InputSmsDirect";
-import { fetchSmsInbox } from "../../services/service";
+import { fetchSmsInbox, uploadJsonFile } from "../../services/service";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "ag-grid-community/styles/ag-theme-balham.css";
 import { GridApi, ColDef, ICellRendererParams, GridReadyEvent } from "ag-grid-community";
+import * as XLSX from "xlsx";
+
 
 interface FileData {
   name: string;
@@ -32,6 +34,10 @@ const ShowFile = () => {
   const [isPopupOpen, setIsPopupOpen] = createSignal(false);
   const [isLoading, setIsLoading] = createSignal(true);
   const [selectedFile, setSelectedFile] = createSignal<File | null>(null);
+  const [jsonData, setJsonData] = createSignal<any[]>([]);
+  const [isUploadFilePopupOpen, setIsUploadFilePopupOpen] = createSignal(false);
+  const [uploadStatus, setUploadStatus] = createSignal<string>("");
+
 
   const uniqueDates = createMemo(() => {
     const dates = initialFiles.map((file) => file.date);
@@ -48,45 +54,80 @@ const ShowFile = () => {
     });
   });
 
-  // Fungsi untuk menangani pemilihan file
-const handleFileSelect = (e: Event) => {
-  const input = e.target as HTMLInputElement;
-  const file = input.files ? input.files[0] : null;
-  if (file) {
+  const handleFileChange = (event: Event) => {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) {
+      alert("No file selected.");
+      return;
+    }
+  
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target?.result) {
+        const binaryStr = e.target.result;
+        const workbook = XLSX.read(binaryStr, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+  
+        const rawJson = XLSX.utils.sheet_to_json(worksheet);
+        const transformedJson = rawJson
+          .map((row: any) => ({
+            number: row.number?.toString() || "",
+            message: row.message || "",
+            status: "pending",
+            created_at: new Date().toISOString(),
+          }))
+          .filter((item) => item.number && item.message); // Filter jika data tidak valid
+  
+        if (transformedJson.length === 0) {
+          alert("No valid data in the file.");
+          return;
+        }
+  
+        console.log("Transformed data:", transformedJson);
+        setJsonData(transformedJson);
+      }
+    };
+    reader.readAsArrayBuffer(file);
     setSelectedFile(file);
-    console.log("File selected:", file);
+  };
+  
+  
+  // Fungsi untuk mengunggah data JSON ke backend
+  const handleFileUpload = async () => {
+    if (jsonData().length === 0) {
+      alert("No data to upload.");
+      return;
+    }
+  
+    try {
+      setUploadStatus("Uploading...");
+      console.log("Data yang dikirim ke backend:", jsonData());
+  
+      const response = await uploadJsonFile(jsonData());
+  
+      console.log("Response dari backend:", response);
+      if (response.status === "success") {
+        alert("File uploaded successfully.");
+        setJsonData([]);
+      } else if (response.status === "partial") {
+        alert(
+          `Partial success: ${response.success_count} records processed, ${response.errors_count} errors.`
+        );
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert("Upload failed. Please try again.");
+    } finally {
+      setUploadStatus("");
+    }
+  };
+  
+  
+  
+  
+  
 
-    // Proses fetch untuk file yang dipilih
-    fetchFileData(file);
-  }
-};
-
-// Fungsi untuk melakukan fetch data berdasarkan file
-const fetchFileData = async (file: File) => {
-  setIsLoading(true);
-  try {
-    // Proses membaca dan memproses file
-    const formData = new FormData();
-    formData.append("file", file);
-    
-    const response = await fetch("/path/to/api/endpoint", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await response.json();
-    console.log("Fetched file data:", data);
-
-    // Lakukan sesuatu dengan data yang didapatkan dari server
-    // Misalnya, update state untuk menampilkan data di grid
-    setInboxMessages(data);
-  } catch (err) {
-    console.error("Error fetching file data:", err);
-    setError("Failed to process the file");
-  } finally {
-    setIsLoading(false);
-  }
-};
 
   // Custom cell renderer for status
   const statusCellRenderer = (params: ICellRendererParams) => {
@@ -294,17 +335,93 @@ const fetchFileData = async (file: File) => {
           Add SMS
         </button>
 
-        <div class="flex items-center gap-4">
-          <label class="cursor-pointer px-4 py-2 bg-yellow-500 text-white rounded shadow hover:bg-yellow-600 text-sm ml-auto">
-            Select File
-            <input
-              type="file"
-              accept=".csv, .xlsx, .xls"
-              class="hidden"
-              onChange={handleFileSelect}  // Menghubungkan fungsi dengan onChange
-            />
-          </label>
+        <div class="flex flex-col gap-4 p-4">
+          {/* Button untuk membuka popup */}
+          <button
+            class="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600 text-sm"
+            onClick={() => setIsUploadFilePopupOpen(true)} // Pastikan setIsUploadFilePopupOpen yang benar dipanggil
+          >
+            Upload File
+          </button>
+
+          {isUploadFilePopupOpen() && (
+            <div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+              <div class="bg-white p-8 rounded shadow-lg max-w-3xl w-full">
+                <h2 class="text-xl font-bold mb-4">Upload File</h2>
+
+                <label class="cursor-pointer px-6 py-3 bg-yellow-500 text-white rounded shadow hover:bg-yellow-600 text-sm">
+                  Select File
+                  <input
+                    type="file"
+                    accept=".csv, .xlsx, .xls"
+                    class="hidden"
+                    onChange={handleFileChange} // Fungsi untuk menyimpan file yang dipilih
+                  />
+                </label>
+
+                <div class="mt-4">
+                  {selectedFile() ? (
+                    <p class="text-gray-700">Selected file: {selectedFile()?.name}</p>
+                  ) : (
+                    <p class="text-gray-500">No file selected.</p>
+                  )}
+                </div>
+
+                <div class="mt-4 overflow-auto max-h-60">
+                  {jsonData().length > 0 ? (
+                    <table class="table-auto w-full border-collapse border border-gray-300">
+                      <thead>
+                        <tr>
+                          {Object.keys(jsonData()[0]).map((key) => (
+                            <th
+                              class="border border-gray-300 px-4 py-2 bg-gray-200 text-gray-700 text-left"
+                            >
+                              {key}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {jsonData().map((row) => (
+                          <tr>
+                            {Object.values(row).map((value) => (
+                              <td class="border border-gray-300 px-4 py-2 text-gray-600">
+                                {typeof value === "string" || typeof value === "number" ? value : ""}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <p class="text-gray-500">No data to review.</p>
+                  )}
+                </div>
+
+                <div class="flex justify-end gap-4 mt-4">
+                  <button
+                    class="px-6 py-3 bg-gray-500 text-white rounded shadow hover:bg-gray-600 text-sm"
+                    onClick={() => setIsUploadFilePopupOpen(false)} // Tutup popup
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    class="px-6 py-3 bg-green-500 text-white rounded shadow hover:bg-green-600 text-sm"
+                    onClick={handleFileUpload} // Fungsi untuk mengunggah file
+                    disabled={jsonData().length === 0} // Nonaktifkan tombol jika tidak ada data
+                  >
+                    Upload
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+
         </div>
+
+
+
 
         <div class="flex items-center gap-4">
           <select

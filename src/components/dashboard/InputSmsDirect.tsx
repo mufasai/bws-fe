@@ -1,4 +1,5 @@
 import { createSignal } from "solid-js";
+import { sendSms } from "../../services/service";  // Import fungsi sendSms dari service.ts
 
 const InputSmsDirect = () => {
   const [phoneNumber, setPhoneNumber] = createSignal("");
@@ -40,15 +41,16 @@ const InputSmsDirect = () => {
     setError("");
 
     const smsData = {
-      phone_number: selectedCountry().code + phoneNumber(),
+      number: selectedCountry().code + phoneNumber(),
       message: message(),
       status: "pending",
     };
 
     try {
-      // await InputSmsAPI(smsData);
+      // Memanggil fungsi sendSms dari service.ts
+      await sendSms(smsData);  
       setStatus("SMS submitted successfully!");
-    } catch {
+    } catch (e) {
       setError("Failed to send SMS. Please try again.");
     } finally {
       setLoading(false);

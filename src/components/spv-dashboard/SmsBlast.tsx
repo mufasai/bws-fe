@@ -1,4 +1,7 @@
-import { createSignal } from "solid-js";
+import { Component } from "solid-js";
+import AgGridSolid from "ag-grid-solid";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-alpine.css";
 
 const FilterIcon = () => (
   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -10,6 +13,7 @@ const FilterIcon = () => (
     />
   </svg>
 );
+
 const DownloadIcon = () => (
   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
@@ -21,16 +25,143 @@ const DownloadIcon = () => (
   </svg>
 );
 
-const SmsBlast = () => {
+const SmsBlast: Component = () => {
+  const columnDefs = [
+    {
+      field: "campaign",
+      headerName: "Campaign",
+      sortable: true,
+      filter: true,
+      rowDrag: true, // Enables row drag on this column
+    },
+    { field: "file", headerName: "File", sortable: true, filter: true },
+    {
+      field: "recipients",
+      headerName: "Recipients",
+      sortable: true,
+      filter: true,
+    },
+    {
+      field: "scheduled",
+      headerName: "Scheduled",
+      sortable: true,
+      filter: true,
+    },
+    { field: "status", headerName: "Status", sortable: true, filter: true },
+    {
+      field: "actions",
+      headerName: "Actions",
+      cellRenderer: (params: any) => {
+        return (
+          <>
+            <button class="text-blue-600 hover:text-blue-800 p-1 rounded-full hover:bg-blue-50">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+            </button>
+            <button class="text-green-600 hover:text-green-800 p-1 rounded-full hover:bg-green-50">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </button>
+            <button class="text-red-600 hover:text-red-800 p-1 rounded-full hover:bg-red-50">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </>
+        );
+      },
+    },
+  ];
+
+  const rowData = [
+    {
+      campaign: "Marketing Team",
+      file: "promo_blast_jan.csv",
+      recipients: "1,500",
+      scheduled: "2024-01-16 10:00",
+      status: "Pending",
+    },
+    {
+      campaign: "Sales Team",
+      file: "sales_blast_feb.csv",
+      recipients: "2,000",
+      scheduled: "2024-02-01 09:00",
+      status: "Completed",
+    },
+    {
+      campaign: "Sales Team",
+      file: "sales_blast_feb.csv",
+      recipients: "2,000",
+      scheduled: "2024-02-01 09:00",
+      status: "Completed",
+    },
+    {
+      campaign: "Sales Team",
+      file: "sales_blast_feb.csv",
+      recipients: "2,000",
+      scheduled: "2024-02-01 09:00",
+      status: "Completed",
+    },
+    {
+      campaign: "Sales Team",
+      file: "sales_blast_feb.csv",
+      recipients: "2,000",
+      scheduled: "2024-02-01 09:00",
+      status: "Completed",
+    },
+  ];
+
+  const onRowDragEnd = (event: any) => {
+    console.log("Row reordered:", event.node.data);
+  };
+
   return (
     <>
-      <div>
+      <div class="w-full">
         <div class="flex justify-between items-center mb-6">
           <div>
             <h2 class="text-2xl font-semibold text-gray-800">
               Blast SMS Authorization
             </h2>
-            <p class="mt-1 text-gray-600">
+            <p class="mt-1 max-w-48 text-gray-600">
               Review and authorize bulk SMS campaigns
             </p>
           </div>
@@ -50,153 +181,19 @@ const SmsBlast = () => {
           </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Campaign
-                </th>
-                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  File
-                </th>
-                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Recipients
-                </th>
-                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Scheduled
-                </th>
-                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <div class="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">
-                      <span class="text-sm font-medium text-purple-800">
-                        MT
-                      </span>
-                    </div>
-                    <div>
-                      <div class="text-sm font-medium text-gray-900">
-                        Marketing Team
-                      </div>
-                      <div class="text-sm text-gray-500">January Promo</div>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center text-sm text-gray-500">
-                    <svg
-                      class="w-4 h-4 mr-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                      />
-                    </svg>
-                    promo_blast_jan.csv
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">1,500</div>
-                  <div class="text-sm text-gray-500">recipients</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  2024-01-16 10:00
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                    Pending
-                  </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <div class="flex space-x-2">
-                    <button class="text-blue-600 hover:text-blue-800 p-1 rounded-full hover:bg-blue-50">
-                      <svg
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                        />
-                      </svg>
-                    </button>
-                    <button class="text-green-600 hover:text-green-800 p-1 rounded-full hover:bg-green-50">
-                      <svg
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </button>
-                    <button class="text-red-600 hover:text-red-800 p-1 rounded-full hover:bg-red-50">
-                      <svg
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
-            <div class="flex items-center justify-between">
-              <div class="text-sm text-gray-500">
-                Showing 1 to 10 of 20 entries
-              </div>
-              <div class="flex space-x-2">
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                  Previous
-                </button>
-                <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                  Next
-                </button>
-              </div>
-            </div>
-          </div>
+        <div class="ag-theme-alpine" style="height: 400px; width: 100%;">
+          <AgGridSolid
+            columnDefs={columnDefs}
+            rowData={rowData}
+            domLayout="autoHeight"
+            animateRows={true}
+            rowDragManaged={true} // Enable drag-and-drop reordering
+            onRowDragEnd={onRowDragEnd} // Callback when a row is dragged and dropped
+          />
         </div>
       </div>
     </>
   );
 };
+
 export default SmsBlast;

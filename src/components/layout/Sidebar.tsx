@@ -1,25 +1,39 @@
 import { Component, createSignal, onMount, Show } from "solid-js";
 import { A, useLocation, useNavigate } from "@solidjs/router";
-import { useAuth } from "../../store/auth.store";
-import ConfirmLogout from "../confirm-logout/confirm-logut";
 import { Tooltip } from "flowbite";
+import ConfirmLogout from "../confirm-logout/confirm-logut";
 
-const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
-  props
-) => {
+const Sidebar: Component<{
+  isOpen: boolean;
+  isMobileOpen: boolean;
+  onToggleSidebar: () => void;
+  onCloseMobile: () => void;
+}> = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [showLogoutDialog, setShowLogoutDialog] = createSignal(false);
-
   const [isSidebarOpen, setIsSidebarOpen] = createSignal(true);
-  // const { logout } = useAuth(); s = 'h'
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = createSignal(false);
 
   const handleLogout = async () => {
     setShowLogoutDialog(true);
   };
+
   onMount(() => {
     initializeTooltips();
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   });
+
+  const handleResize = () => {
+    if (window.innerWidth < 1024) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(props.isOpen);
+    }
+  };
+
   function initializeTooltips() {
     const tooltipTriggerList = document.querySelectorAll(
       "[data-tooltip-target]"
@@ -38,7 +52,7 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
 
   const menuItems = [
     {
-      title: "Dashboard",
+      title: "Dashboard User",
       path: "/dashboard",
       icon: (
         <svg
@@ -63,8 +77,8 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
       ),
     },
     {
-      title: "Project",
-      path: "/project",
+      title: "User Management",
+      path: "/userManagement",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +131,7 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
           width="24px"
           height="24px"
           viewBox="0 0 56 56"
-          fill={location.pathname === "/spvDashboard" ? "white" : "#989898"}
+          fill={location.pathname === "/spvDashboard" ? "white" : "#000000"}
         >
           <path d="M28 4c13.255 0 24 10.745 24 24S41.255 52 28 52S4 41.255 4 28S14.745 4 28 4m0 4C16.954 8 8 16.954 8 28s8.954 20 20 20s20-8.954 20-20S39.046 8 28 8m.573 6.286v2.687c3.976.319 6.855 2.704 6.982 6.314h-3.308c-.207-2.004-1.638-3.165-3.674-3.419V26.5l.764.19c4.183.971 6.473 2.689 6.473 6.076c0 3.897-3.181 6.107-7.237 6.394v2.671h-1.797V39.16c-4.04-.303-7.236-2.577-7.347-6.394h3.292c.286 1.861 1.495 3.229 4.055 3.5V29.33l-.652-.16c-4.04-.937-6.218-2.75-6.218-5.979c0-3.563 2.862-5.916 6.87-6.219v-2.687zm0 15.458v6.537c2.72-.207 3.865-1.495 3.865-3.197c0-1.638-.89-2.608-3.865-3.34m-1.797-9.876c-2.29.286-3.499 1.606-3.499 3.054s.955 2.512 3.5 3.149z" />
         </svg>
@@ -131,129 +145,95 @@ const Sidebar: Component<{ isOpen: boolean; onToggleSidebar: () => void }> = (
           width="24"
           height="24"
           viewBox="0 0 24 24"
-          fill="none" // Pastikan tidak ada fill
+          fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
             d="M4 18L4.0025 14.0215C4.0025 13.8889 4.05518 13.7617 4.14895 13.6679C4.24271 13.5742 4.36989 13.5215 4.5025 13.5215H9.5035C9.9645 13.5215 9.962 13.1125 9.962 12.1395C9.962 11.1665 7.511 10.347 7.511 6.9265C7.511 3.506 10.05 2.5 12.16 2.5C14.27 2.5 16.5685 3.506 16.5685 6.9265C16.5685 10.347 14.1305 10.891 14.1305 12.1395C14.1305 13.388 14.1305 13.5215 14.5205 13.5215H19.5005C19.6331 13.5215 19.7603 13.5742 19.8541 13.6679C19.9478 13.7617 20.0005 13.8889 20.0005 14.0215V18H4Z"
-            stroke={location.pathname === "/auditDashboard" ? "white" : "#989898"} // Ubah outline berdasarkan kondisi
+            stroke={
+              location.pathname === "/auditDashboard" ? "white" : "#000000"
+            }
             stroke-width="2"
             stroke-linejoin="round"
-            fill="none" // Tidak ada fill
+            fill="none"
           />
           <path
             d="M4 21H20"
-            stroke={location.pathname === "/auditDashboard" ? "white" : "#989898"} // Ubah outline berdasarkan kondisi
+            stroke={
+              location.pathname === "/auditDashboard" ? "white" : "#000000"
+            }
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            fill="none" // Tidak ada fill
+            fill="none"
           />
         </svg>
       ),
-    }
-    
+    },
   ];
 
-  const toggleSidebar = () => {
-    props.onToggleSidebar();
-    setIsSidebarOpen(!isSidebarOpen());
-  };
-
   return (
-    <>
-      <ConfirmLogout
-        showLogoutDialog={showLogoutDialog()}
-        onClose={() => setShowLogoutDialog(false)}
-      />
-      <aside
-        class={`h-full transition-all duration-300 ${
-          isSidebarOpen() ? "w-[15vw]" : "w-[70px]"
-        } bg-white dark:bg-gray-800 shadow-lg`}
-      >
-        <div class="flex flex-col h-full">
-          {/* Header dengan Logo */}
-          <div class="flex items-center h-16 px-4">
-            <Show
-              when={isSidebarOpen()}
-              fallback={
-                <div class="flex justify-center w-full mt-12">
-                  <img src="./logo.png" class="w-250 h-98 "></img>
-                </div>
-              }
-            >
-              <div class="flex items-center gap-6 mt-12">
-                <img src="./logo.png" class="w-250 h-98"></img>
-              </div>
-            </Show>
-            <div class="absolute right-[-1vw]">
-              <button
-                onClick={toggleSidebar}
-                class="p-1 relative bg-[#367aff] rounded-full right-0  text-white"
-              >
-                <svg
-                  class="w-4 h-4 transition-transform duration-300"
-                  style={{
-                    transform: isSidebarOpen()
-                      ? "rotate(0deg)"
-                      : "rotate(180deg)",
-                  }}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          {/* Navigation dengan icon yang lebih besar */}
-          <nav class="flex-1 px-3 py-4 mt-12 space-y-4 justify-center overflow-y-auto">
-            {menuItems.map((item) => (
-              <A
-                data-tooltip-target={`tooltip-${item.title}`}
-                data-tooltip-placement="right"
-                href={item.path}
-                class={`flex items-center font-inter font-medium justify-start pl-2 py-2 text-[2vh] rounded-full transition-colors ${
-                  location.pathname === item.path
-                    ? "text-white bg-blue-500 dark:text-blue-300 dark:bg-blue-900/50"
-                    : "text-[#989898] hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-                }`}
-              >
-                <div
-                  class={`w-8 h-4 flex items-center justify-center ${
-                    location.pathname === item.path
-                      ? "text-white"
-                      : "text-[#989898] dark:text-gray-300"
-                  }`}
-                >
-                  {item.icon}
-                </div>
-                <Show when={isSidebarOpen()}>
-                  <span class="ml-3">{item.title}</span>
-                </Show>
-                <div
-                  id={`tooltip-${item.title}`}
-                  role="tooltip"
-                  class="absolute z-10 w-max invisible inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white shadow-lg rounded-lg opacity-0 tooltip dark:bg-gray-700"
-                >
-                  {item.title}
-                  <div class="tooltip-arrow" data-popper-arrow></div>
-                </div>
-              </A>
-            ))}
-          </nav>
-
-          {/* Footer dengan fungsi logout yang sudah diperbarui */}
+    <div
+      class={`fixed inset-y-0 left-0 z-30 w-64 bg-white dark:bg-gray-800 transform transition-transform duration-300 ease-in-out lg:relative lg:transform-none ${
+        props.isMobileOpen
+          ? "translate-x-0"
+          : "-translate-x-full lg:translate-x-0"
+      }`}
+    >
+      {/* Logo Section */}
+      <div class="h-16 flex items-center justify-between px-4 border-b dark:border-gray-700">
+        <div class="flex items-center text-center mx-auto">
+          <p
+            class={`text-xl font-semibold transition-opacity duration-200  ${
+              props.isOpen ? "opacity-100" : "opacity-0 lg:opacity-100"
+            }`}
+          >
+            Generator OTP
+          </p>
         </div>
-      </aside>
-    </>
+        <button
+          onClick={props.onCloseMobile}
+          class="lg:hidden p-2 rounded-md text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      {/* Menu Items */}
+      <nav class="px-4 py-4 space-y-2">
+        {menuItems.map((item) => (
+          <A
+            href={item.path}
+            class={`flex items-center px-3 py-2 rounded-lg transition-colors ${
+              location.pathname === item.path
+                ? "bg-[#FF934F] text-white"
+                : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+            }`}
+          >
+            <div class="w-6 h-6">{item.icon}</div>
+            <span
+              class={`ml-3 transition-opacity duration-200 ${
+                props.isOpen ? "opacity-100" : "opacity-0 lg:opacity-100"
+              }`}
+            >
+              {item.title}
+            </span>
+          </A>
+        ))}
+      </nav>
+    </div>
   );
 };
 

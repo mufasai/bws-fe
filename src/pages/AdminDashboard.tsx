@@ -40,24 +40,6 @@ export default function adminDashboard() {
     "Gateways",
   ];
 
-  const renderContent = () => {
-    switch (activeTab()) {
-      case "SMS Template":
-        return <div>Content for SMS Template</div>;
-      case "Provider Prefixes":
-        return <div>Content for Provider Prefixes</div>;
-      case "Country Codes":
-        return <div>Content for Country Codes</div>;
-      case "SMS Costs":
-        return <div>Content for SMS Costs</div>;
-      case "Application":
-        return <div>Content for Application</div>;
-      case "Gateways":
-        return <div>Content for Gateways</div>;
-      default:
-        return <div>Select a tab to view content</div>;
-    }
-  };
   const [loading, setLoading] = createSignal(true);
 
   onMount(() => {
@@ -66,29 +48,36 @@ export default function adminDashboard() {
   });
 
   return (
-    <div class="flex flex-col space-y-6 p-6 bg-gray-100 min-h-screen max-w-screen">
-      <div class="flex space-x-4">
+    <div class="lg:mt-0 mt-12 flex flex-col space-y-6 p-6 bg-gray-100 min-h-screen lg:max-w-screen">
+      <div class="lg:flex lg:flex-row lg:space-x-4 grid grid-cols-2 lg:gap-0">
         {loading()
           ? stats.map(() => (
-              <div class="flex-1 bg-white shadow-md rounded-xl p-6 animate-pulse">
-                <div class="h-4 bg-gray-300 rounded mb-4 w-1/3"></div>
-                <div class="h-8 bg-gray-300 rounded mb-6 w-1/2"></div>
-                <div class="h-6 bg-gray-300 rounded mb-4 w-1/4"></div>
-                <div class="h-4 bg-gray-300 rounded w-2/3"></div>
+              <div class="lg:flex-1 bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 shadow-md rounded-xl p-6 animate-pulse">
+                <div class="h-4 bg-gray-300 rounded mb-4 lg:w-1/3"></div>
+                <div class="h-8 bg-gray-300 rounded mb-6 lg:w-1/2"></div>
+                <div class="h-6 bg-gray-300 rounded mb-4 lg:w-1/4"></div>
+                <div class="h-4 bg-gray-300 rounded lg:w-2/3"></div>
               </div>
             ))
-          : stats.map((stat) => (
-              <div class="flex-1 bg-white shadow-md rounded-xl p-6">
-                <div class="flex flex-row justify-end"></div>
-                <h3 class="text-lg font-semibold text-gray-700">
-                  {stat.title}
-                </h3>
-                <div class="text-3xl font-bold text-gray-900">{stat.value}</div>
+          : stats.map((stat, index) => (
+              <div
+                class={`lg:flex-1 shadow-lg rounded-xl lg:p-6 p-4 text-white ${
+                  index % 4 === 0
+                    ? "bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500"
+                    : index % 4 === 1
+                    ? "bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400"
+                    : index % 4 === 2
+                    ? "bg-gradient-to-br from-purple-500 via-indigo-500 to-blue-500"
+                    : "bg-gradient-to-br from-orange-400 via-pink-400 to-purple-400"
+                }`}
+              >
+                <h3 class="lg:text-lg text-sm font-semibold">{stat.title}</h3>
+                <div class="lg:text-3xl text-xl font-bold">{stat.value}</div>
                 <div
-                  class={`inline-flex items-center text-sm mt-2 h-6 rounded-lg ${
+                  class={`inline-flex items-center lg:text-sm mt-2 h-6 rounded-lg text-[10px] ${
                     stat.change.startsWith("+")
-                      ? "bg-[rgba(30,186,9,0.16)] text-green-500"
-                      : "bg-[rgba(255,0,0,0.16)] text-red-500"
+                      ? "bg-green-200 text-green-800"
+                      : "bg-red-200 text-red-800"
                   }`}
                   style="padding: 0 8px; width: fit-content;"
                 >
@@ -108,7 +97,7 @@ export default function adminDashboard() {
                       d="M7.712 7.208V16q0 .213-.144.356q-.144.144-.357.144t-.356-.144T6.71 16V6.308q0-.343.233-.576t.575-.232h9.693q.212 0 .356.144t.143.357t-.143.356t-.357.143H8.42l9.747 9.766q.14.14.13.344t-.15.344t-.334.14t-.335-.14z"
                     />
                   </svg>
-                  <p class="text-sm text-gray-500">{stat.description}</p>
+                  <p class="lg:text-sm text-[10px]">{stat.description}</p>
                 </div>
               </div>
             ))}
