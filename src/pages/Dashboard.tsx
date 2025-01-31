@@ -12,7 +12,7 @@ const Dashboard: Component = () => {
   setTimeout(() => setIsLoading(false), 1000);
 
   return (
-    <div class="p-6 bg-gray-100 min-h-screen">
+    <div class="p-6 min-h-screen">
       {isLoading() ? (
         <DashboardSkeleton />
       ) : (

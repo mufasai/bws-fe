@@ -1,7 +1,5 @@
-import { Component, createSignal, onMount, Show } from "solid-js";
-import { A, useLocation, useNavigate } from "@solidjs/router";
-import { Tooltip } from "flowbite";
-import ConfirmLogout from "../confirm-logout/confirm-logut";
+import { type Component, createSignal, onMount } from "solid-js";
+import { A, useLocation } from "@solidjs/router";
 
 const Sidebar: Component<{
   isOpen: boolean;
@@ -10,47 +8,30 @@ const Sidebar: Component<{
   onCloseMobile: () => void;
 }> = (props) => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const [showLogoutDialog, setShowLogoutDialog] = createSignal(false);
-  const [isSidebarOpen, setIsSidebarOpen] = createSignal(true);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = createSignal(false);
-
-  const handleLogout = async () => {
-    setShowLogoutDialog(true);
-  };
-
-  onMount(() => {
-    initializeTooltips();
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  });
-
-  const handleResize = () => {
-    if (window.innerWidth < 1024) {
-      setIsSidebarOpen(false);
-    } else {
-      setIsSidebarOpen(props.isOpen);
-    }
-  };
-
-  function initializeTooltips() {
-    const tooltipTriggerList = document.querySelectorAll(
-      "[data-tooltip-target]"
-    );
-    tooltipTriggerList.forEach((triggerEl) => {
-      const targetEl = document.getElementById(
-        triggerEl.getAttribute("data-tooltip-target")!
-      );
-      if (targetEl) {
-        new Tooltip(targetEl as HTMLElement, triggerEl as HTMLElement, {
-          placement: "right",
-        });
-      }
-    });
-  }
 
   const menuItems = [
+    {
+      title: "Admin Dashboard",
+      path: "/adminDashboard",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <circle cx="16" cy="5" r="4" />
+        </svg>
+      ),
+    },
     {
       title: "Dashboard User",
       path: "/dashboard",
@@ -73,52 +54,6 @@ const Sidebar: Component<{
           <path d="M4 14h6v6h-6z"></path>
           <path d="M17 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
           <path d="M7 7m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-        </svg>
-      ),
-    },
-    {
-      title: "User Management",
-      path: "/userManagement",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-        >
-          <g
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-          >
-            <path d="M21.25 8.912v1.544a1.03 1.03 0 0 1-1.028 1.03l-6.166 1.543v-.514a1.03 1.03 0 0 0-1.028-1.03h-2.056a1.027 1.027 0 0 0-1.028 1.03v.514l-6.166-1.544a1.027 1.027 0 0 1-1.028-1.03V8.913a2.576 2.576 0 0 1 2.57-2.574h13.36a2.575 2.575 0 0 1 2.57 2.574" />
-            <path d="m3.778 11.485l.36 7.288a2.204 2.204 0 0 0 2.178 1.977h11.368a2.197 2.197 0 0 0 2.178-1.977l.36-7.288" />
-            <path d="M13.028 11.485h-2.056a1.03 1.03 0 0 0-1.028 1.03v1.03c0 .568.46 1.028 1.028 1.028h2.056c.567 0 1.028-.46 1.028-1.029v-1.03c0-.568-.46-1.029-1.028-1.029m2.055-5.147V4.28a1.03 1.03 0 0 0-1.027-1.029H9.944a1.027 1.027 0 0 0-1.027 1.03v2.058" />
-          </g>
-        </svg>
-      ),
-    },
-    {
-      title: "Admin Dashboard",
-      path: "/adminDashboard",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-          <circle cx="16" cy="5" r="4" />
         </svg>
       ),
     },
@@ -170,26 +105,58 @@ const Sidebar: Component<{
         </svg>
       ),
     },
+    {
+      title: "User Management",
+      path: "/userManagement",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <g
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          >
+            <path d="M21.25 8.912v1.544a1.03 1.03 0 0 1-1.028 1.03l-6.166 1.543v-.514a1.03 1.03 0 0 0-1.028-1.03h-2.056a1.027 1.027 0 0 0-1.028 1.03v.514l-6.166-1.544a1.027 1.027 0 0 1-1.028-1.03V8.913a2.576 2.576 0 0 1 2.57-2.574h13.36a2.575 2.575 0 0 1 2.57 2.574" />
+            <path d="m3.778 11.485l.36 7.288a2.204 2.204 0 0 0 2.178 1.977h11.368a2.197 2.197 0 0 0 2.178-1.977l.36-7.288" />
+            <path d="M13.028 11.485h-2.056a1.03 1.03 0 0 0-1.028 1.03v1.03c0 .568.46 1.028 1.028 1.028h2.056c.567 0 1.028-.46 1.028-1.029v-1.03c0-.568-.46-1.029-1.028-1.029m2.055-5.147V4.28a1.03 1.03 0 0 0-1.027-1.029H9.944a1.027 1.027 0 0 0-1.027 1.03v2.058" />
+          </g>
+        </svg>
+      ),
+    },
   ];
 
   return (
-    <div
-      class={`fixed inset-y-0 left-0 z-30 w-64 bg-white dark:bg-gray-800 transform transition-transform duration-300 ease-in-out lg:relative lg:transform-none ${
-        props.isMobileOpen
-          ? "translate-x-0"
-          : "-translate-x-full lg:translate-x-0"
-      }`}
+    <aside
+      class={`fixed inset-y-0 left-0 z-30 bg-white dark:bg-gray-800 transform transition-all duration-300 ease-in-out ${
+        props.isMobileOpen ? "translate-x-0" : "-translate-x-full"
+      } ${
+        props.isOpen ? "lg:w-56 lg:translate-x-0" : "lg:w-16 lg:translate-x-0"
+      } border-r dark:border-gray-700`}
     >
       {/* Logo Section */}
-      <div class="h-16 flex items-center justify-between px-4 border-b dark:border-gray-700">
-        <div class="flex items-center text-center mx-auto">
-          <p
-            class={`text-xl font-semibold transition-opacity duration-200  ${
-              props.isOpen ? "opacity-100" : "opacity-0 lg:opacity-100"
+      {/* Logo Section */}
+      <div class="h-16 flex items-center justify-between px-4 border-b dark:border-gray-700 overflow-hidden">
+        <div class="flex items-center min-w-[180px]">
+          <img
+            src="public/LOGO GOTP.png"
+            alt="Logo"
+            class={`h-10 w-auto transition-all duration-300 mx-auto ${
+              props.isOpen ? "opacity-100" : "opacity-0"
             }`}
-          >
-            Generator OTP
-          </p>
+          />
+          <img
+            src="public/logo mobile GOTP.png"
+            alt="Logo Small"
+            class={`h-10 w-auto absolute transition-all duration-300 ${
+              props.isOpen ? "opacity-0" : "opacity-100"
+            }`}
+          />
         </div>
         <button
           onClick={props.onCloseMobile}
@@ -212,28 +179,36 @@ const Sidebar: Component<{
       </div>
 
       {/* Menu Items */}
-      <nav class="px-4 py-4 space-y-2">
-        {menuItems.map((item) => (
+      <nav class="px-2 py-4">
+        {menuItems.map((item, index) => (
           <A
             href={item.path}
-            class={`flex items-center px-3 py-2 rounded-lg transition-colors ${
+            class={`flex items-center px-3 py-4 rounded-lg transition-colors mb-1 group relative ${
               location.pathname === item.path
-                ? "bg-[#FF934F] text-white"
+                ? "bg-[#FF934F] h-12 text-white"
                 : "text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
             }`}
           >
-            <div class="w-6 h-6">{item.icon}</div>
+            <div class="w-6 h-6 flex-shrink-0">{item.icon}</div>
             <span
-              class={`ml-3 transition-opacity duration-200 ${
-                props.isOpen ? "opacity-100" : "opacity-0 lg:opacity-100"
-              }`}
+              class={`ml-3 whitespace-nowrap transition-all duration-200 ${
+                props.isOpen
+                  ? "opacity-100 relative"
+                  : "opacity-0 absolute left-14"
+              } group-hover:opacity-100`}
             >
               {item.title}
             </span>
+            {/* Tooltip for collapsed state */}
+            {!props.isOpen && (
+              <div class="absolute left-14 bg-gray-900 text-white px-2 py-1 rounded-md text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                {item.title}
+              </div>
+            )}
           </A>
         ))}
       </nav>
-    </div>
+    </aside>
   );
 };
 
